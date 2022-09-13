@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "dgSpecHash": "v6ICCGx5lCYeYidiimS51SBbeaRka13RqX/IhJy282Ry7Ge0CnTVsWa2g/TAQesiryIwyZabID+6r7YmXUHKZQ==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\sfagen\\dev_projects\\MessagingApp\\BackEndMessagingApp\\BackEndMessagingApp\\BackEndMessagingApp.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\sfagen\\.nuget\\packages\\microsoft.extensions.apidescription.server\\3.0.0\\microsoft.extensions.apidescription.server.3.0.0.nupkg.sha512",
+    "C:\\Users\\sfagen\\.nuget\\packages\\microsoft.openapi\\1.2.3\\microsoft.openapi.1.2.3.nupkg.sha512",
+    "C:\\Users\\sfagen\\.nuget\\packages\\swashbuckle.aspnetcore\\6.2.3\\swashbuckle.aspnetcore.6.2.3.nupkg.sha512",
+    "C:\\Users\\sfagen\\.nuget\\packages\\swashbuckle.aspnetcore.swagger\\6.2.3\\swashbuckle.aspnetcore.swagger.6.2.3.nupkg.sha512",
+    "C:\\Users\\sfagen\\.nuget\\packages\\swashbuckle.aspnetcore.swaggergen\\6.2.3\\swashbuckle.aspnetcore.swaggergen.6.2.3.nupkg.sha512",
+    "C:\\Users\\sfagen\\.nuget\\packages\\swashbuckle.aspnetcore.swaggerui\\6.2.3\\swashbuckle.aspnetcore.swaggerui.6.2.3.nupkg.sha512"
+  ],
+  "logs": []
+}
