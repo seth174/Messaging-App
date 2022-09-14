@@ -1,7 +1,8 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\BackEndMessagingApp",
+    "\\BackEndMessagingApp\\BackEndMessagingApp"
   ],
-  "SelectedNode": "\\frontendmessagingapp",
   "PreviewInSolutionExplorer": false
 }
