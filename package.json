@@ -1,0 +1,10 @@
+{
+  "devDependencies": {
+    "react-inject-env": "^2.1.0"
+  },
+  "browser": {
+    "fs": false,
+    "path": false,
+    "os": false
+  }
+}
