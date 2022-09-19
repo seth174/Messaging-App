@@ -4,6 +4,9 @@ import TextField from '@mui/material/TextField';
 import { Box } from '@mui/system';
 import { useState } from 'react';
 import LoginAndSignUp from '../components/loginAndSignupForm'
+import { IUser } from '../models/IUser';
+import loginUser from '../services/LoginApi';
+
 
 const Login: React.FC = () => {
 
@@ -11,6 +14,10 @@ const Login: React.FC = () => {
         email: '',
         password: ''
     });
+
+    const [user, setUser] = useState<IUser | undefined>(undefined);
+
+    const [possibleUser, setPossibleUser] = useState<IUser | undefined>(undefined);
 
     function handleDataChange(event: React.ChangeEvent<HTMLInputElement>) {
         const { name, value } = event.currentTarget;
@@ -22,6 +29,13 @@ const Login: React.FC = () => {
                 }
             );
         })
+    }
+
+    function handleLogin() {
+        loginUser(formData.email).then((value) => setPossibleUser(possibleUser));
+
+        console.log(possibleUser);
+
     }
 
     const textFields = [
@@ -57,6 +71,7 @@ const Login: React.FC = () => {
         <Button
             variant="contained"
             sx={{ ml: 5, width: 100 }}
+            onClick={handleLogin}
         >
             Login
         </Button>]
