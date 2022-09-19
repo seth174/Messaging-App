@@ -31,5 +31,3 @@ export const addUsers = (user: IUser) => {
             console.log("POST ERR:", err);
         });
 };
-
-export const verifyUser = ()
