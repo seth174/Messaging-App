@@ -6,34 +6,36 @@ import { Key } from 'react';
 
 interface ILoginAndSignUpProps {
 
-    textFields: any;
-    buttons: any;
+	textFields: any;
+	buttons: any;
+
+	onSubmit: any;
 
 
 }
 
 const Signup: React.FC<ILoginAndSignUpProps> = (props: ILoginAndSignUpProps) => {
-    return (
-        <Box>
-            <form>
-                <Grid container direction='column' justifyContent="center" alignItems="center" rowSpacing={5} columnSpacing={{ xs: 1, sm: 2, md: 3 }} sx={{ mt: 3 }} >
-                    {props.textFields.map((textField: any, index: Key | null | undefined) => {
-                        return (
-                            <Grid item xs={3} key={index}>
-                                {textField}
-                            </Grid>
-                        )
-                    })}
+	return (
+		<Box>
+			<form onSubmit={props.onSubmit}>
+				<Grid container direction='column' justifyContent="center" alignItems="center" rowSpacing={5} columnSpacing={{ xs: 1, sm: 2, md: 3 }} sx={{ mt: 3 }} >
+					{props.textFields.map((textField: any, index: Key | null | undefined) => {
+						return (
+							<Grid item xs={3} key={index}>
+								{textField}
+							</Grid>
+						)
+					})}
 
-                    <Grid item xs={3}>
-                        {props.buttons}
-                    </Grid>
-                </Grid>
-            </form>
+					<Grid item xs={3}>
+						{props.buttons}
+					</Grid>
+				</Grid>
+			</form>
 
 
-        </Box >
-    );
+		</Box >
+	);
 }
 
 export default Signup;
