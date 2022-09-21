@@ -1,8 +1,8 @@
-import { Button } from '@mui/material';
+import { Button, Typography } from '@mui/material';
 import Grid from '@mui/material/Grid';
-import TextField from '@mui/material/TextField';
 import { Box } from '@mui/system';
 import { Key } from 'react';
+import NavBar from './nav-bar';
 
 interface ILoginAndSignUpProps {
 
@@ -11,14 +11,18 @@ interface ILoginAndSignUpProps {
 
 	onSubmit: any;
 
-
+	topText: string;
 }
 
 const Signup: React.FC<ILoginAndSignUpProps> = (props: ILoginAndSignUpProps) => {
 	return (
 		<Box>
+			<NavBar />
+
+			<Typography variant='h4' sx={{ textAlign: 'center', fontWeight: 'bold', mt: 4 }} color='primary'>{props.topText}</Typography>
+
 			<form onSubmit={props.onSubmit}>
-				<Grid container direction='column' justifyContent="center" alignItems="center" rowSpacing={5} columnSpacing={{ xs: 1, sm: 2, md: 3 }} sx={{ mt: 3 }} >
+				<Grid container direction='column' justifyContent="center" alignItems="center" rowSpacing={5} columnSpacing={{ xs: 1, sm: 2, md: 3 }} sx={{ mt: 0 }} >
 					{props.textFields.map((textField: any, index: Key | null | undefined) => {
 						return (
 							<Grid item xs={3} key={index}>
@@ -32,8 +36,6 @@ const Signup: React.FC<ILoginAndSignUpProps> = (props: ILoginAndSignUpProps) => 
 					</Grid>
 				</Grid>
 			</form>
-
-
 		</Box >
 	);
 }

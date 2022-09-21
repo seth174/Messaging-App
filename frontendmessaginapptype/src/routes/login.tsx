@@ -2,23 +2,28 @@ import { Button } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import { Box } from '@mui/system';
-import { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { useContext, useState } from 'react';
+import { NavLink, useNavigate } from 'react-router-dom';
 import LoginAndSignUp from '../components/loginAndSignupForm'
+import NavBar from '../components/nav-bar';
 import NavButton from '../components/nav-button';
 import { ILoginRequest } from '../models/ILoginRequest';
 import { IUser } from '../models/IUser';
 import loginUser from '../services/LoginApi';
+import { authenticatedContext } from '../context/authenticated-context'
 
 
 
 interface ILoginProps {
 	setUser: React.Dispatch<React.SetStateAction<IUser>>;
-	setIsAuthentidcated: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 
 const Login: React.FC<ILoginProps> = (props: ILoginProps) => {
+
+	const { isAuthenticated, setIsAuthenticated } = useContext(authenticatedContext);
+	const navigate = useNavigate();
+	const goHome = () => navigate('/mainpage', { replace: true });
 
 	const [formData, setFormData] = useState({
 		email: '',
@@ -50,7 +55,8 @@ const Login: React.FC<ILoginProps> = (props: ILoginProps) => {
 			if (bcrypt.compareSync(formData.password, value.password)) {
 				console.log('authenticated');
 				props.setUser(value);
-				props.setIsAuthentidcated(true);
+				setIsAuthenticated(true);
+				goHome();
 			}
 		});
 
@@ -99,7 +105,10 @@ const Login: React.FC<ILoginProps> = (props: ILoginProps) => {
 
 
 	return (
-		<LoginAndSignUp textFields={textFields} buttons={buttons} onSubmit={handleLogin} />
+		<div>
+			<LoginAndSignUp topText="Log In" textFields={textFields} buttons={buttons} onSubmit={handleLogin} />
+		</div>
+
 	);
 }
 
