@@ -5,7 +5,12 @@ import { getUsers } from './services/UsersApi';
 import { IUser } from './models/IUser'
 import Login from './routes/login'
 import Signup from './routes/signup';
+import Home from './routes/home';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import NavBar from './components/nav-bar';
+import Logout from './routes/logout';
+import Main from './routes/main';
+import { authenticatedContext } from './context/authenticated-context';
 
 interface IAuthenticatedProps {
 	component: JSX.Element
@@ -42,17 +47,37 @@ function App() {
 
 	return (
 		<div>
-			<BrowserRouter>
-				<Routes>
-					<Route
-						path="/"
-						element={<Navigate replace to="/login" />}
-					/>
-					<Route element={<Signup />} path='/signup' />
-					<Route element={<Login setUser={setUser} setIsAuthentidcated={setIsAuthenticated} />} path='/login' />
-				</Routes>
-			</BrowserRouter>
-			<h1>Is authenticated: {isAuthenticated ? "true" : "false"}</h1>
+			<authenticatedContext.Provider value={{ isAuthenticated, setIsAuthenticated }}>
+				<BrowserRouter>
+					{!isAuthenticated &&
+						<Routes>
+							<Route
+								path="/"
+								element={<Navigate replace to="/home" />}
+							/>
+							<Route element={<Home />} path='/home' />
+							{!isAuthenticated ? <Route element={<Signup />} path='/signup' /> : <Route path="/signup" element={<Navigate replace to="/home" />} />}
+							<Route element={<Login setUser={setUser} />} path='/login' />
+						</Routes>
+					}
+					{isAuthenticated &&
+						<Routes>
+							<Route
+								path="/"
+								element={<Navigate replace to="/home" />}
+							/>
+							<Route path="mainpage" element={<Main />} />
+							<Route
+								path="/login"
+								element={<Navigate replace to="/home" />}
+							/>
+							<Route path="/logout" element={<Logout />} />
+							<Route element={<Home />} path='/home' />
+						</Routes>
+					}
+				</BrowserRouter>
+				<h1>Is authenticated: {isAuthenticated ? "true" : "false"}</h1>
+			</authenticatedContext.Provider >
 		</div>
 	);
 }

@@ -156,7 +156,7 @@ const Signup: React.FC = () => {
 
 	return (
 		<div>
-			<LoginAndSignUp textFields={getTextFields()} buttons={buttons} onSubmit={submit} />
+			<LoginAndSignUp topText="Sign Up" textFields={getTextFields()} buttons={buttons} onSubmit={submit} />
 		</div>
 	);
 }
