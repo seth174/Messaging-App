@@ -9,8 +9,16 @@ import { borderRadius, color } from "@mui/system";
 import InputBase from '@mui/material/InputBase';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
+import { useNavigate } from "react-router-dom";
 
 const MainPageNavBar: FC = () => {
+
+  const navigate = useNavigate();
+  const goHome = () => navigate('/home', { replace: true });
+  const goConversations = () => navigate('/mainpage', { replace: true });
+  const settings = () => navigate('/settings', { replace: true });
+  const logout = () => navigate('/logout', { replace: true });
+
   const Search = styled('div')(({ theme }) => ({
     position: 'relative',
     borderRadius: theme.shape.borderRadius,
@@ -68,6 +76,7 @@ const MainPageNavBar: FC = () => {
             edge="start"
             color="inherit"
             aria-label="menu"
+            onClick={goHome}
             sx={{
               mx: 4,
             }}
@@ -98,7 +107,7 @@ const MainPageNavBar: FC = () => {
             />
           </Search>
 
-          <div>
+          <div className="icon">
             <IconButton
               size="large"
               aria-label="account of current user"
@@ -106,7 +115,6 @@ const MainPageNavBar: FC = () => {
               aria-haspopup="true"
               onClick={handleMenu}
               color="inherit"
-              sx={{ justifySelf: 'right' }}
             >
               <AccountCircle />
             </IconButton>
@@ -125,10 +133,31 @@ const MainPageNavBar: FC = () => {
               open={Boolean(anchorEl)}
               onClose={handleClose}
             >
-              <MenuItem onClick={handleClose}>Home</MenuItem>
-              <MenuItem onClick={handleClose}>Conversations</MenuItem>
+              <MenuItem
+                onClick={() => {
+                  goHome();
+                  handleClose();
+
+                }}
+              >
+                Home
+              </MenuItem>
+              <MenuItem
+                onClick={() => {
+                  goConversations();
+                  handleClose();
+                }}>
+                Conversations
+              </MenuItem>
               <MenuItem onClick={handleClose}>Settings</MenuItem>
-              <MenuItem onClick={handleClose}>Logout</MenuItem>
+              <MenuItem
+                onClick={() => {
+                  logout();
+                  handleClose();
+                }}
+              >
+                Logout
+              </MenuItem>
             </Menu>
           </div>
 

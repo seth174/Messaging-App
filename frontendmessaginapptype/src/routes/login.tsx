@@ -11,105 +11,110 @@ import { ILoginRequest } from '../models/ILoginRequest';
 import { IUser } from '../models/IUser';
 import loginUser from '../services/LoginApi';
 import { authenticatedContext } from '../context/authenticated-context'
+import { getUserByEmail } from '../services/UsersApi';
 
 
 
 interface ILoginProps {
-	setUser: React.Dispatch<React.SetStateAction<IUser>>;
+  setUser: React.Dispatch<React.SetStateAction<IUser>>;
 }
 
 
 const Login: React.FC<ILoginProps> = (props: ILoginProps) => {
 
-	const { isAuthenticated, setIsAuthenticated } = useContext(authenticatedContext);
-	const navigate = useNavigate();
-	const goHome = () => navigate('/mainpage', { replace: true });
+  const { isAuthenticated, setIsAuthenticated } = useContext(authenticatedContext);
+  const navigate = useNavigate();
+  const goHome = () => navigate('/mainpage', { replace: true });
 
-	const [formData, setFormData] = useState({
-		email: '',
-		password: ''
-	});
+  const [formData, setFormData] = useState({
+    email: '',
+    password: ''
+  });
 
-	function handleDataChange(event: React.ChangeEvent<HTMLInputElement>) {
-		const { name, value } = event.currentTarget;
-		setFormData((oldValue) => {
-			return (
-				{
-					...oldValue,
-					[name]: value
-				}
-			);
-		})
-	}
+  function handleDataChange(event: React.ChangeEvent<HTMLInputElement>) {
+    const { name, value } = event.currentTarget;
+    setFormData((oldValue) => {
+      return (
+        {
+          ...oldValue,
+          [name]: value
+        }
+      );
+    })
+  }
 
-	function handleLogin(e: React.FormEvent<HTMLFormElement>) {
-		e.preventDefault();
-		console.log(formData.email)
-		const request: ILoginRequest = {
-			email: formData.email
-		}
-		loginUser(request).then((value) => {
-			var bcrypt = require('bcryptjs');
-			console.log('here')
-			console.log(bcrypt.compareSync(formData.password, value.password))
-			if (bcrypt.compareSync(formData.password, value.password)) {
-				console.log('authenticated');
-				props.setUser(value);
-				setIsAuthenticated(true);
-				goHome();
-			}
-		});
+  async function handleLogin(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    console.log(formData.email)
+    const request: ILoginRequest = {
+      email: formData.email
+    }
 
-	}
+    const user: IUser = await getUserByEmail(request.email);
 
-	const textFields = [
-		<TextField
-			id="outlined"
-			label="Email"
-			sx={{
-				width: 300
-			}}
-			name='email'
-			onChange={handleDataChange}
-			value={formData.email}
-		/>,
-		<TextField
-			sx={{
+    console.log("USER", user);
 
-				width: 300
-			}}
-			id="outlined"
-			label="Password"
-			type="password"
-			name='password'
-			value={formData.password}
-			onChange={handleDataChange}
-		/>];
+    loginUser(request).then((value) => {
+      var bcrypt = require('bcryptjs');
+      if (bcrypt.compareSync(formData.password, user.password)) {
+        window.sessionStorage.setItem("token", value.token);
+        window.sessionStorage.setItem("user_id", user.id ? user.id?.toString() : "");
+        window.sessionStorage.setItem("isAuthorized", "true");
+        //props.setUser(value);
+        setIsAuthenticated(true);
+        goHome();
+      }
+    });
+  }
 
-	const buttons = [
-		<NavButton
-			component={NavLink}
-			variant="contained"
-			sx={{ mr: 5, width: 100 }}
-			to={'/signup'}
-		>
-			Sign up
-		</NavButton>,
-		<Button
-			variant="contained"
-			sx={{ ml: 5, width: 100 }}
-			type="submit"
-		>
-			Login
-		</Button>]
+  const textFields = [
+    <TextField
+      id="outlined"
+      label="Email"
+      sx={{
+        width: 300
+      }}
+      name='email'
+      onChange={handleDataChange}
+      value={formData.email}
+    />,
+    <TextField
+      sx={{
+
+        width: 300
+      }}
+      id="outlined"
+      label="Password"
+      type="password"
+      name='password'
+      value={formData.password}
+      onChange={handleDataChange}
+    />];
+
+  const buttons = [
+    <NavButton
+      component={NavLink}
+      variant="contained"
+      sx={{ mr: 5, width: 100 }}
+      to={'/signup'}
+    >
+      Sign up
+    </NavButton>,
+    <Button
+      variant="contained"
+      sx={{ ml: 5, width: 100 }}
+      type="submit"
+    >
+      Login
+    </Button>]
 
 
-	return (
-		<div>
-			<LoginAndSignUp topText="Log In" textFields={textFields} buttons={buttons} onSubmit={handleLogin} />
-		</div>
+  return (
+    <div>
+      <LoginAndSignUp topText="Log In" textFields={textFields} buttons={buttons} onSubmit={handleLogin} />
+    </div>
 
-	);
+  );
 }
 
 export default Login;
