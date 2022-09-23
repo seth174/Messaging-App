@@ -13,6 +13,9 @@ const Logout: FC = () => {
   const goConversations = () => navigate('/mainpage', { replace: true });
   function logout() {
     setIsAuthenticated(false);
+    window.sessionStorage.setItem("token", "");
+    window.sessionStorage.setItem("user_id", "");
+    window.sessionStorage.setItem("isAuthorized", "false");
     goHome();
   }
 

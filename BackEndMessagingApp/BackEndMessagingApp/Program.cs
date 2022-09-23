@@ -1,10 +1,33 @@
+using BackEndMessagingApp.Repository;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddAuthentication(x =>
+{
+	x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+	x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(o =>
+{
+	var Key = Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"]);
+	o.SaveToken = true;
+	o.TokenValidationParameters = new TokenValidationParameters
+	{
+		ValidateIssuer = false,
+		ValidateAudience = false,
+		ValidateLifetime = true,
+		ValidateIssuerSigningKey = true,
+		IssuerSigningKey = new SymmetricSecurityKey(Key)
+	};
+});
 // Add services to the container.
 
 builder.Services.AddControllers();
+
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -14,6 +37,8 @@ builder.Services.AddDbContext<BackEndMessagingApp.Data.MessagingAppContext>(
     {
         options.UseSqlServer(builder.Configuration.GetConnectionString("Default"));
     });
+
+builder.Services.AddSingleton<IJWTManagerRepository, JWTManagerRepository>();
 
 var app = builder.Build();
 
@@ -27,6 +52,8 @@ if (app.Environment.IsDevelopment())
 app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
 
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 

@@ -13,73 +13,83 @@ import Main from './routes/main';
 import { authenticatedContext } from './context/authenticated-context';
 
 interface IAuthenticatedProps {
-	component: JSX.Element
-	path: string
+  component: JSX.Element
+  path: string
 }
 
 function App() {
-	const [users, setUsers] = useState<IUser[]>([]);
+  const [users, setUsers] = useState<IUser[]>([]);
 
-	const [user, setUser] = useState<IUser>({} as IUser);
+  const [user, setUser] = useState<IUser>({} as IUser);
 
-	const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
-	useEffect(() => {
-		async function loadUsers() {
+  useEffect(() => {
+    async function loadUsers() {
 
-			const users = await getUsers();
+      const users = await getUsers();
 
-			setUsers(users);
-			return users;
-		}
-		loadUsers();
-	}, []);
+      setUsers(users);
+      return users;
+    }
+    loadUsers();
+  }, []);
 
-	// const IsAuthenticated: typeof React.Fragment<IAuthenticatedProps> = (props: IAuthenticatedProps) => {
-	// 	console.log('here');
+  useEffect(() => {
+    async function loadAdmin() {
 
-	// 	return (
-	// 		<Route path={props.path} element={props.component} />
-	// 	);
-	// }
-	console.log('User is authenticated: ' + isAuthenticated);
+      if (window.sessionStorage.getItem("isAuthorized") == "true") {
+        setIsAuthenticated(true);
+      }
+    }
+    loadAdmin();
+  }, []);
+
+  // const IsAuthenticated: typeof React.Fragment<IAuthenticatedProps> = (props: IAuthenticatedProps) => {
+  // 	console.log('here');
+
+  // 	return (
+  // 		<Route path={props.path} element={props.component} />
+  // 	);
+  // }
+  console.log('User is authenticated: ' + isAuthenticated);
 
 
-	return (
-		<div>
-			<authenticatedContext.Provider value={{ isAuthenticated, setIsAuthenticated }}>
-				<BrowserRouter>
-					{!isAuthenticated &&
-						<Routes>
-							<Route
-								path="/"
-								element={<Navigate replace to="/home" />}
-							/>
-							<Route element={<Home />} path='/home' />
-							{!isAuthenticated ? <Route element={<Signup />} path='/signup' /> : <Route path="/signup" element={<Navigate replace to="/home" />} />}
-							<Route element={<Login setUser={setUser} />} path='/login' />
-						</Routes>
-					}
-					{isAuthenticated &&
-						<Routes>
-							<Route
-								path="/"
-								element={<Navigate replace to="/home" />}
-							/>
-							<Route path="mainpage" element={<Main />} />
-							<Route
-								path="/login"
-								element={<Navigate replace to="/home" />}
-							/>
-							<Route path="/logout" element={<Logout />} />
-							<Route element={<Home />} path='/home' />
-						</Routes>
-					}
-				</BrowserRouter>
-				<h1>Is authenticated: {isAuthenticated ? "true" : "false"}</h1>
-			</authenticatedContext.Provider >
-		</div>
-	);
+  return (
+    <div>
+      <authenticatedContext.Provider value={{ isAuthenticated, setIsAuthenticated }}>
+        <BrowserRouter>
+          {!isAuthenticated &&
+            <Routes>
+              <Route
+                path="/"
+                element={<Navigate replace to="/home" />}
+              />
+              <Route element={<Home />} path='/home' />
+              {!isAuthenticated ? <Route element={<Signup />} path='/signup' /> : <Route path="/signup" element={<Navigate replace to="/home" />} />}
+              <Route element={<Login setUser={setUser} />} path='/login' />
+            </Routes>
+          }
+          {isAuthenticated &&
+            <Routes>
+              <Route
+                path="/"
+                element={<Navigate replace to="/home" />}
+              />
+              <Route path="mainpage" element={<Main />} />
+              <Route
+                path="/login"
+                element={<Navigate replace to="/home" />}
+              />
+              <Route path="/logout" element={<Logout />} />
+              <Route element={<Home />} path='/home' />
+            </Routes>
+          }
+        </BrowserRouter>
+        <h1>Is authenticated: {isAuthenticated ? "true" : "false"}</h1>
+      </authenticatedContext.Provider >
+    </div>
+  );
 }
 
 export default App;

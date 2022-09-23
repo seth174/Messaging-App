@@ -7,18 +7,24 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using BackEndMessagingApp.Data;
 using BackEndMessagingApp.Models;
+using Microsoft.AspNetCore.Authorization;
+using BackEndMessagingApp.Repository;
 
 namespace BackEndMessagingApp.Controllers
 {
+
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class UsersController : ControllerBase
     {
         private readonly MessagingAppContext _context;
+        private IJWTManagerRepository _jWTManager;
 
-        public UsersController(MessagingAppContext context)
+        public UsersController(MessagingAppContext context, IJWTManagerRepository jWTManager)
         {
             _context = context;
+            _jWTManager = jWTManager;
         }
 
         // GET: api/Users
@@ -41,6 +47,26 @@ namespace BackEndMessagingApp.Controllers
               return NotFound();
           }
             var user = await _context.Users.FindAsync(id);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return user;
+        }
+
+
+        [AllowAnonymous]
+        [Route("[action]/{email}")]
+        [HttpGet]
+        public async Task<ActionResult<User>> GetUser(String email)
+        {
+            if (_context.Users == null)
+            {
+                return NotFound();
+            }
+            var user = _context.Users.First((x) => x.Email == email);
 
             if (user == null)
             {
@@ -114,6 +140,21 @@ namespace BackEndMessagingApp.Controllers
             await _context.SaveChangesAsync();
 
             return NoContent();
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
+        [Route("authenticate")]
+        public IActionResult Authenticate(LoginRequest2 request)
+        {
+            var token = _jWTManager.Authenticate(request, _context);
+
+            if (token == null)
+            {
+                return Unauthorized();
+            }
+
+            return Ok(token);
         }
 
         private bool UserExists(int id)
