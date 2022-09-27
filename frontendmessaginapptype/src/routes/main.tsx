@@ -1,28 +1,40 @@
+import { AppBar, Box, CssBaseline, Toolbar, Typography } from "@mui/material";
 import React, { FC, useEffect, useState } from "react";
+import Conversation from "../components/conversation";
 import MainPageNavBar from "../components/main-page-nav-bar";
+import NavBar from "../components/nav-bar";
+import SideMenu from "../components/side-menu";
 import { IUser } from "../models/IUser";
-import { getUsers } from "../services/UsersApi";
+import { getUser } from "../services/UsersApi";
 
 const Main: FC = () => {
 
-  const [users, setUsers] = useState<IUser[]>();
+  const [user, setUser] = useState<IUser | undefined>(undefined);
 
 
 
   useEffect(() => {
-    async function get() {
-      const users: IUser[] = await getUsers();
-      setUsers(users);
-      return users;
+    async function getLoggedInUser() {
+      const id: number = parseInt(window.sessionStorage.getItem("user_id") || "-100");
+      const user: IUser = await getUser(id);
+      setUser(user);
+      return user;
+
+
     }
-    getUsers();
+    getLoggedInUser();
   }, []);
 
   return (
     <div>
-      <MainPageNavBar />
+      <Box sx={{ display: 'flex' }}>
+        <MainPageNavBar />
+        <CssBaseline />
+
+        <SideMenu />
+        <Conversation />
+      </Box>
       <h1>Main Page</h1>
-      <h1>{users?.length}</h1>
     </div>
 
   );

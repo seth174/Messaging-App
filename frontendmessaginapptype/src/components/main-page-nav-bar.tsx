@@ -66,105 +66,103 @@ const MainPageNavBar: FC = () => {
 
 
   return (
-    <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'flex-start' }}>
-      <AppBar position='static'>
+    <AppBar position='fixed' sx={{ zIndex: (theme) => theme.zIndex.drawer + 1, py: 2 }}>
 
-        <Toolbar sx={{ my: 2 }}>
-          <IconButton
-            id="test"
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            onClick={goHome}
-            sx={{
-              mx: 4,
-            }}
-          >
-            <MessageOutlinedIcon />
-          </IconButton>
-
-          <Typography variant='h6' sx={{
-            mr: 2,
-            display: { xs: 'none', md: 'flex' },
-            fontWeight: 700,
-            letterSpacing: '.3rem',
-            color: 'inherit',
-            textDecoration: 'none',
+      <Toolbar >
+        <IconButton
+          id="test"
+          size="large"
+          edge="start"
+          color="inherit"
+          aria-label="menu"
+          onClick={goHome}
+          sx={{
+            mx: 4,
           }}
+        >
+          <MessageOutlinedIcon />
+        </IconButton>
+
+        <Typography variant='h6' sx={{
+          mr: 2,
+          display: { xs: 'none', md: 'flex' },
+          fontWeight: 700,
+          letterSpacing: '.3rem',
+          color: 'inherit',
+          textDecoration: 'none',
+        }}
+        >
+          Seth's Messaging App
+        </Typography>
+
+        <Search>
+          <SearchIconWrapper>
+            <SearchIcon />
+          </SearchIconWrapper>
+
+          <StyledInputBase
+            placeholder="Search Users ..."
+            inputProps={{ 'aria-label': 'search' }}
+          />
+        </Search>
+
+        <div className="icon">
+          <IconButton
+            size="large"
+            aria-label="account of current user"
+            aria-controls="menu-appbar"
+            aria-haspopup="true"
+            onClick={handleMenu}
+            color="inherit"
           >
-            Seth's Messaging App
-          </Typography>
+            <AccountCircle />
+          </IconButton>
+          <Menu
+            id="menu-appbar"
+            anchorEl={anchorEl}
+            anchorOrigin={{
+              vertical: 'top',
+              horizontal: 'right',
+            }}
+            keepMounted
+            transformOrigin={{
+              vertical: 'top',
+              horizontal: 'right',
+            }}
+            open={Boolean(anchorEl)}
+            onClose={handleClose}
+          >
+            <MenuItem
+              onClick={() => {
+                goHome();
+                handleClose();
 
-          <Search>
-            <SearchIconWrapper>
-              <SearchIcon />
-            </SearchIconWrapper>
-
-            <StyledInputBase
-              placeholder="Search Users ..."
-              inputProps={{ 'aria-label': 'search' }}
-            />
-          </Search>
-
-          <div className="icon">
-            <IconButton
-              size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleMenu}
-              color="inherit"
-            >
-              <AccountCircle />
-            </IconButton>
-            <Menu
-              id="menu-appbar"
-              anchorEl={anchorEl}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
               }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={Boolean(anchorEl)}
-              onClose={handleClose}
             >
-              <MenuItem
-                onClick={() => {
-                  goHome();
-                  handleClose();
-
-                }}
-              >
-                Home
-              </MenuItem>
-              <MenuItem
-                onClick={() => {
-                  goConversations();
-                  handleClose();
-                }}>
-                Conversations
-              </MenuItem>
-              <MenuItem onClick={handleClose}>Settings</MenuItem>
-              <MenuItem
-                onClick={() => {
-                  logout();
-                  handleClose();
-                }}
-              >
-                Logout
-              </MenuItem>
-            </Menu>
-          </div>
+              Home
+            </MenuItem>
+            <MenuItem
+              onClick={() => {
+                goConversations();
+                handleClose();
+              }}>
+              Conversations
+            </MenuItem>
+            <MenuItem onClick={handleClose}>Settings</MenuItem>
+            <MenuItem
+              onClick={() => {
+                logout();
+                handleClose();
+              }}
+            >
+              Logout
+            </MenuItem>
+          </Menu>
+        </div>
 
 
-        </Toolbar>
-      </AppBar>
-    </Box>
+      </Toolbar>
+    </AppBar>
   )
 }
 
