@@ -9,7 +9,7 @@ using System.Text;
 
 namespace BackEndMessagingApp.Repository
 {
-	public class JWTManagerRepository : IJWTManagerRepository
+    public class JWTManagerRepository : IJWTManagerRepository
 	{
 
 		private readonly IConfiguration iconfiguration;

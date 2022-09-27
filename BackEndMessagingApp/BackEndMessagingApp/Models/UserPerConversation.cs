@@ -14,6 +14,6 @@ namespace BackEndMessagingApp.Models
         [ForeignKey("User")]
         public int userId { get; set; }
 
-        public User? user { get; set; }
+        public Models.User? user { get; set; }
     }
 }
