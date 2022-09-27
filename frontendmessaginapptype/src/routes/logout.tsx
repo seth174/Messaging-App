@@ -22,7 +22,7 @@ const Logout: FC = () => {
   return (
     <div>
       <MainPageNavBar />
-      <Box sx={{ flexGrow: 1 }}  >
+      <Box sx={{ flexGrow: 1, marginTop: 10 }}  >
         <Typography
           variant="h4"
           color='primary'
