@@ -1,3 +1,4 @@
+using BackEndMessagingApp.Mapping;
 using BackEndMessagingApp.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -5,6 +6,8 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddAutoMapper(typeof(MappingProfiles).Assembly);
 
 builder.Services.AddAuthentication(x =>
 {

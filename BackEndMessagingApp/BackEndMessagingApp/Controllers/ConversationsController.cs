@@ -29,7 +29,7 @@ namespace BackEndMessagingApp.Controllers
           {
               return NotFound();
           }
-            return await _context.Conversations.ToListAsync();
+            return await _context.Conversations.Include(x => x.UsersPerConversations).ToListAsync();
         }
 
         // GET: api/Conversations/5

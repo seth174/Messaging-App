@@ -9,6 +9,8 @@ using BackEndMessagingApp.Data;
 using BackEndMessagingApp.Models;
 using Microsoft.AspNetCore.Authorization;
 using BackEndMessagingApp.Repository;
+using BackEndMessagingApp.DTO;
+using AutoMapper;
 
 namespace BackEndMessagingApp.Controllers
 {
@@ -20,22 +22,26 @@ namespace BackEndMessagingApp.Controllers
     {
         private readonly MessagingAppContext _context;
         private IJWTManagerRepository _jWTManager;
+        private IMapper _mapper;
 
-        public UsersController(MessagingAppContext context, IJWTManagerRepository jWTManager)
+        public UsersController(MessagingAppContext context, IJWTManagerRepository jWTManager, IMapper mapper)
         {
             _context = context;
             _jWTManager = jWTManager;
+            _mapper = mapper;
         }
 
         // GET: api/Users
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> GetUsers()
+        public async Task<ActionResult<IEnumerable<UserListDTO>>> GetUsers()
         {
           if (_context.Users == null)
           {
               return NotFound();
           }
-            return await _context.Users.ToListAsync();
+
+           var users = await _context.Users.ToListAsync();
+           return _mapper.Map<List<UserListDTO>>(users);
         }
 
         // GET: api/Users/5
