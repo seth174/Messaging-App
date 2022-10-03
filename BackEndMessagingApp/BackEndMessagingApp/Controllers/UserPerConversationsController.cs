@@ -50,51 +50,6 @@ namespace BackEndMessagingApp.Controllers
             return userPerConversation;
         }
 
-        // PUT: api/UserPerConversations/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutUserPerConversation(int id, UserPerConversation userPerConversation)
-        {
-            if (id != userPerConversation.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(userPerConversation).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!UserPerConversationExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-        // POST: api/UserPerConversations
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<UserPerConversation>> PostUserPerConversation(UserPerConversation userPerConversation)
-        {
-          if (_context.UserPerConversations == null)
-          {
-              return Problem("Entity set 'MessagingAppContext.UserPerConversations'  is null.");
-          }
-            _context.UserPerConversations.Add(userPerConversation);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetUserPerConversation", new { id = userPerConversation.Id }, userPerConversation);
-        }
 
         // DELETE: api/UserPerConversations/5
         [HttpDelete("{id}")]
@@ -116,9 +71,5 @@ namespace BackEndMessagingApp.Controllers
             return NoContent();
         }
 
-        private bool UserPerConversationExists(int id)
-        {
-            return (_context.UserPerConversations?.Any(e => e.Id == id)).GetValueOrDefault();
-        }
     }
 }

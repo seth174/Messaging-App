@@ -14,6 +14,21 @@ namespace BackEndMessagingApp.Data
                 relationship.DeleteBehavior = DeleteBehavior.Restrict;
             }
 
+            modelbuilder.Entity<UserPerConversation>().HasKey(table => new {
+                table.ConversationId,
+                table.UserId
+            });
+
+            modelbuilder.Entity<UserPerConversation>()
+            .HasOne(bc => bc.Conversation)
+            .WithMany(b => b.UserPerConversations)
+            .HasForeignKey(bc => bc.ConversationId);
+
+            modelbuilder.Entity<UserPerConversation>()
+                .HasOne(bc => bc.User)
+                .WithMany(c => c.userPerConversations)
+                .HasForeignKey(bc => bc.UserId);
+
             base.OnModelCreating(modelbuilder);
         }
         public MessagingAppContext() { }

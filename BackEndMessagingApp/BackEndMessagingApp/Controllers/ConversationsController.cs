@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using BackEndMessagingApp.Data;
 using BackEndMessagingApp.Models;
+using AutoMapper;
+using BackEndMessagingApp.DTO.ConversationDTO;
 
 namespace BackEndMessagingApp.Controllers
 {
@@ -15,39 +17,46 @@ namespace BackEndMessagingApp.Controllers
     public class ConversationsController : ControllerBase
     {
         private readonly MessagingAppContext _context;
+        private IMapper _mapper;
 
-        public ConversationsController(MessagingAppContext context)
+        public ConversationsController(MessagingAppContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         // GET: api/Conversations
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Conversation>>> GetConversations()
+        public async Task<ActionResult<IEnumerable<ConversationDetailsDTO>>> GetConversations()
         {
           if (_context.Conversations == null)
           {
               return NotFound();
           }
-            return await _context.Conversations.Include(x => x.UsersPerConversations).ToListAsync();
+            var conversations = await _context.Conversations.Include(x => x.UserPerConversations).ThenInclude(x => x.User).ToListAsync();
+            var conversationsDTO = _mapper.Map<IEnumerable<ConversationDetailsDTO>>(conversations);
+
+            return Ok(conversationsDTO);
         }
 
         // GET: api/Conversations/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Conversation>> GetConversation(int id)
+        public async Task<ActionResult<ConversationDetailsDTO>> GetConversation(int id)
         {
           if (_context.Conversations == null)
           {
               return NotFound();
           }
-            var conversation = await _context.Conversations.FindAsync(id);
+            var conversation = await _context.Conversations.Include(x => x.UserPerConversations).ThenInclude(x => x.User).FirstOrDefaultAsync(x => x.Id == id);
 
             if (conversation == null)
             {
                 return NotFound();
             }
 
-            return conversation;
+            _mapper.Map<ConversationDetailsDTO>(conversation);
+
+            return Ok(conversation);
         }
 
         // PUT: api/Conversations/5
@@ -84,13 +93,13 @@ namespace BackEndMessagingApp.Controllers
         // POST: api/Conversations
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Conversation>> PostConversation(Conversation conversation)
+        public async Task<ActionResult<Conversation>> PostConversation(ConversationDetailsDTO conversation)
         {
           if (_context.Conversations == null)
           {
               return Problem("Entity set 'MessagingAppContext.Conversations'  is null.");
           }
-            _context.Conversations.Add(conversation);
+            _context.Conversations.Add(_mapper.Map<Conversation>(conversation));
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetConversation", new { id = conversation.Id }, conversation);

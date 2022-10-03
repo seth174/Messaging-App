@@ -1,6 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using BackEndMessagingApp.DTO.ConversationDTO;
+using BackEndMessagingApp.DTO.UserPerConversationDTO;
+using System.ComponentModel.DataAnnotations;
 
-namespace BackEndMessagingApp.DTO
+namespace BackEndMessagingApp.DTO.UserDTO
 {
     public class UserDetailsDTO
     {
@@ -13,6 +15,8 @@ namespace BackEndMessagingApp.DTO
         public string Email { get; set; }
         public string Password { get; set; }
 
-        public List<ConversationListDTO>? ConversationListDTOs { get; set; }
+        public ICollection<UserPerConversationConversationDTO> UserPerConversations { get; set; }
+
+
     }
 }

@@ -4,6 +4,7 @@ using BackEndMessagingApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BackEndMessagingApp.Migrations
 {
     [DbContext(typeof(MessagingAppContext))]
-    partial class MessagingAppContextModelSnapshot : ModelSnapshot
+    [Migration("20220930181133_UpdatePrimaryKeyUsersPerConversation")]
+    partial class UpdatePrimaryKeyUsersPerConversation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -172,15 +174,17 @@ namespace BackEndMessagingApp.Migrations
 
             modelBuilder.Entity("BackEndMessagingApp.Models.UserPerConversation", b =>
                 {
+                    b.Property<int>("userId")
+                        .HasColumnType("int")
+                        .HasColumnOrder(2);
+
                     b.Property<int>("ConversationId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnOrder(1);
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.HasKey("userId", "ConversationId");
 
-                    b.HasKey("ConversationId", "UserId");
-
-                    b.HasIndex("UserId");
+                    b.HasIndex("ConversationId");
 
                     b.ToTable("UserPerConversations");
                 });
@@ -256,25 +260,20 @@ namespace BackEndMessagingApp.Migrations
             modelBuilder.Entity("BackEndMessagingApp.Models.UserPerConversation", b =>
                 {
                     b.HasOne("BackEndMessagingApp.Models.Conversation", "Conversation")
-                        .WithMany("UserPerConversations")
+                        .WithMany()
                         .HasForeignKey("ConversationId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("BackEndMessagingApp.Models.User", "User")
-                        .WithMany("userPerConversationsS")
-                        .HasForeignKey("UserId")
+                    b.HasOne("BackEndMessagingApp.Models.User", "user")
+                        .WithMany("userPerConversations")
+                        .HasForeignKey("userId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Conversation");
 
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("BackEndMessagingApp.Models.Conversation", b =>
-                {
-                    b.Navigation("UserPerConversations");
+                    b.Navigation("user");
                 });
 
             modelBuilder.Entity("BackEndMessagingApp.Models.Message", b =>
@@ -294,7 +293,7 @@ namespace BackEndMessagingApp.Migrations
 
                     b.Navigation("messagesReactionPerUser");
 
-                    b.Navigation("userPerConversationsS");
+                    b.Navigation("userPerConversations");
                 });
 #pragma warning restore 612, 618
         }

@@ -8,7 +8,7 @@ namespace BackEndMessagingApp.Models
         
         [StringLength(150)]
         public string? Title { get; set; }
-        public ICollection<UserPerConversation>? UsersPerConversations;
-        public ICollection<DeletedConversation>? DeletedConversations;
+        public ICollection<UserPerConversation>? UserPerConversations { get; set; }
+        public ICollection<DeletedConversation>? DeletedConversations   { get; set; }
     }
 }

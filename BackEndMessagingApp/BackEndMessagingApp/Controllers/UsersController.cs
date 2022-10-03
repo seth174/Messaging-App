@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 using BackEndMessagingApp.Repository;
 using BackEndMessagingApp.DTO;
 using AutoMapper;
+using BackEndMessagingApp.DTO.UserDTO;
 
 namespace BackEndMessagingApp.Controllers
 {
@@ -46,20 +47,28 @@ namespace BackEndMessagingApp.Controllers
 
         // GET: api/Users/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<User>> GetUser(int id)
+        public async Task<ActionResult<UserDetailsDTO>> GetUser(int id)
         {
           if (_context.Users == null)
           {
               return NotFound();
           }
-            var user = await _context.Users.FindAsync(id);
+            
+            var user = await _context.
+                Users.Include(x => x.userPerConversations).
+                ThenInclude(x => x.Conversation).
+                ThenInclude(x => x.UserPerConversations).
+               ThenInclude(x => x.User).
+                FirstOrDefaultAsync(x => x.Id == id);
 
+
+            
             if (user == null)
             {
                 return NotFound();
             }
 
-            return user;
+            return _mapper.Map<UserDetailsDTO>(user);
         }
 
 
@@ -117,13 +126,15 @@ namespace BackEndMessagingApp.Controllers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [AllowAnonymous]
         [HttpPost]
-        public async Task<ActionResult<User>> PostUser(User user)
+        public async Task<ActionResult<User>> PostUser(UserCreateDto user)
         {
           if (_context.Users == null)
           {
               return Problem("Entity set 'MessagingAppContext.Users'  is null.");
           }
-            _context.Users.Add(user);
+
+            var createUser = _mapper.Map<User>(user);
+            _context.Users.Add(createUser);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetUser", new { id = user.Id }, user);
