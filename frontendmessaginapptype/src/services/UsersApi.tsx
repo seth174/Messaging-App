@@ -38,6 +38,7 @@ export const getUser = async (id: number): Promise<IUser> => {
   const response = await axios
     .get(`${BASE_URL}users/${id}`, config)
     .then((result) => {
+      console.log(result.data);
       const response: IUser = result.data;
       return response;
     })
@@ -45,6 +46,8 @@ export const getUser = async (id: number): Promise<IUser> => {
       console.log("POST ERR:", err);
       return {} as IUser;
     });
+
+  console.log("HERE", response);
   return response;
 };
 

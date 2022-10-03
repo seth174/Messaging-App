@@ -1,4 +1,4 @@
-import { Button } from '@mui/material';
+import { Button, Typography } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import { Box } from '@mui/system';
@@ -19,13 +19,15 @@ interface ILoginProps {
   setUser: React.Dispatch<React.SetStateAction<IUser>>;
 }
 
-
 const Login: React.FC<ILoginProps> = (props: ILoginProps) => {
 
+
+  const [failedLogin, setFailedLogin] = useState<boolean>(false);
   const { isAuthenticated, setIsAuthenticated } = useContext(authenticatedContext);
   const navigate = useNavigate();
   const goHome = () => navigate('/mainpage', { replace: true });
 
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [formData, setFormData] = useState({
     email: '',
     password: ''
@@ -44,15 +46,13 @@ const Login: React.FC<ILoginProps> = (props: ILoginProps) => {
   }
 
   async function handleLogin(e: React.FormEvent<HTMLFormElement>) {
+    setIsLoading(true);
     e.preventDefault();
-    console.log(formData.email)
     const request: ILoginRequest = {
       email: formData.email
     }
 
     const user: IUser = await getUserByEmail(request.email);
-
-    console.log("USER", user);
 
     loginUser(request).then((value) => {
       var bcrypt = require('bcryptjs');
@@ -64,32 +64,49 @@ const Login: React.FC<ILoginProps> = (props: ILoginProps) => {
         setIsAuthenticated(true);
         goHome();
       }
-    });
+      else {
+        setIsLoading(false);
+        setFailedLogin(true);
+      }
+    }).catch((error) => {
+      setFailedLogin(true);
+      setIsLoading(false);
+    }
+    )
   }
 
-  const textFields = [
-    <TextField
-      id="outlined"
-      label="Email"
-      sx={{
-        width: 300
-      }}
-      name='email'
-      onChange={handleDataChange}
-      value={formData.email}
-    />,
-    <TextField
-      sx={{
+  function getTextFields() {
+    return (
+      [
+        <TextField
+          id="outlined"
+          label="Email"
+          sx={{
+            width: 300
+          }}
+          name='email'
+          onChange={handleDataChange}
+          value={formData.email}
+          error={failedLogin}
+          helperText={failedLogin ? 'Email or Password Incorrect' : ""}
+        />,
+        <TextField
+          sx={{
 
-        width: 300
-      }}
-      id="outlined"
-      label="Password"
-      type="password"
-      name='password'
-      value={formData.password}
-      onChange={handleDataChange}
-    />];
+            width: 300
+          }}
+          id="outlined"
+          label="Password"
+          type="password"
+          name='password'
+          value={formData.password}
+          onChange={handleDataChange}
+          error={failedLogin}
+          helperText={failedLogin ? 'Email or Password Incorrect' : ""}
+        />]
+
+    );
+  }
 
   const buttons = [
     <NavButton
@@ -111,8 +128,11 @@ const Login: React.FC<ILoginProps> = (props: ILoginProps) => {
 
   return (
     <div>
-      <LoginAndSignUp topText="Log In" textFields={textFields} buttons={buttons} onSubmit={handleLogin} />
-    </div>
+      <LoginAndSignUp topText="Log In" textFields={getTextFields()} buttons={buttons} onSubmit={handleLogin} />
+      {isLoading && <div style={{ justifyContent: 'center', display: 'flex', alignItems: 'center', position: 'relative', paddingTop: '100' }} >
+        <div className="dot-pulse" style={{ margin: 50 }}></div>
+      </div>}
+    </div >
 
   );
 }
