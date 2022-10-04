@@ -2,11 +2,19 @@ import { AppBar, Box, CssBaseline, Divider, Drawer, List, ListItem, ListItemButt
 import { FC, useEffect, useState } from "react";
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
+import PersonIcon from '@mui/icons-material/Person';
+import AddIcon from '@mui/icons-material/Add';
 import { IConversation } from "../models/IConversation";
+import { IUserPerConversations } from "../models/IUserPerConversations";
 
 const drawerWidth = 300;
 
-const SideMenu: FC = () => {
+interface ISideMenuProps {
+  userPerConversations: IUserPerConversations[] | undefined
+}
+
+const SideMenu: FC<ISideMenuProps> = (props: ISideMenuProps) => {
+
 
   return (
     <Drawer
@@ -20,13 +28,22 @@ const SideMenu: FC = () => {
       <Toolbar sx={{ height: 100 }} />
       <Box>
         <List>
-          {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-            <ListItem key={text} disablePadding>
+          {props.userPerConversations?.map((userPerConversation, index) => (
+            <ListItem key={index} disablePadding>
               <ListItemButton>
                 <ListItemIcon>
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                  {userPerConversation?.conversation?.userPerConversations?.length == 2 ?
+                    <div>
+                      <PersonIcon color="primary" />
+                    </div>
+                    :
+                    <div>
+                      <PersonIcon color="primary" />
+                      <AddIcon color="primary" />
+                    </div>
+                  }
                 </ListItemIcon>
-                <ListItemText primary={text} />
+                <ListItemText primary={userPerConversation.conversation?.title} />
               </ListItemButton>
             </ListItem>
           ))}

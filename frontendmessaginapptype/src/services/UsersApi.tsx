@@ -7,6 +7,12 @@ const config = {
   headers: { Authorization: `Bearer ${window.sessionStorage.getItem("token")}` }
 };
 
+function getHeader() {
+  return {
+    headers: { Authorization: `Bearer ${window.sessionStorage.getItem("token")}` }
+  }
+}
+
 
 export const getUsers = async (): Promise<IUser[]> => {
   const response = await axios
@@ -36,7 +42,7 @@ export const addUsers = (user: IUser) => {
 
 export const getUser = async (id: number): Promise<IUser> => {
   const response = await axios
-    .get(`${BASE_URL}users/${id}`, config)
+    .get(`${BASE_URL}users/${id}`, getHeader())
     .then((result) => {
       console.log(result.data);
       const response: IUser = result.data;
