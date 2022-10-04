@@ -54,12 +54,13 @@ const Login: React.FC<ILoginProps> = (props: ILoginProps) => {
 
     const user: IUser = await getUserByEmail(request.email);
 
-    loginUser(request).then((value) => {
+    const login = async () => await loginUser(request).then(async (value) => {
       var bcrypt = require('bcryptjs');
-      if (bcrypt.compareSync(formData.password, user.password)) {
-        window.sessionStorage.setItem("token", value.token);
+      if (await bcrypt.compareSync(formData.password, user.password)) {
         window.sessionStorage.setItem("user_id", user.id ? user.id?.toString() : "");
         window.sessionStorage.setItem("isAuthorized", "true");
+        const token = value.token;
+        window.sessionStorage.setItem("token", token);
         //props.setUser(value);
         setIsAuthenticated(true);
         goHome();
@@ -72,7 +73,9 @@ const Login: React.FC<ILoginProps> = (props: ILoginProps) => {
       setFailedLogin(true);
       setIsLoading(false);
     }
-    )
+    );
+    await login();
+
   }
 
   function getTextFields() {
