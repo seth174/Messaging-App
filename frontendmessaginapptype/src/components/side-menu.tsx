@@ -5,39 +5,23 @@ import AddIcon from '@mui/icons-material/Add';
 import { IConversation } from "../models/IConversation";
 import { IUserPerConversations } from "../models/IUserPerConversations";
 import CreateIcon from '@mui/icons-material/Create';
-import { IUser } from "../models/IUser";
 
 const drawerWidth = 250;
 
 interface ISideMenuProps {
   userPerConversations: IUserPerConversations[] | undefined
   setConversation: React.Dispatch<React.SetStateAction<IConversation | undefined>>
+
+  calculateConversationName(conversations: IUserPerConversations[] | undefined, length: number): string
 }
 
 const SideMenu: FC<ISideMenuProps> = (props: ISideMenuProps) => {
 
-
-  const conversationName = (userPerConversation: IUserPerConversations): string => {
-    if (userPerConversation.conversation?.title != null) {
-      return userPerConversation.conversation.title;
+  function handleConversationName(users: IUserPerConversations): string {
+    if (users.conversation?.title != null) {
+      return users.conversation.title;
     }
-    let name: string = "";
-    const userId: string | null = window.sessionStorage.getItem("user_id");
-    let userNumber: number = parseInt(userId ? userId : '-1');
-    let count = 0;
-    userPerConversation.conversation?.userPerConversations?.forEach((user: IUserPerConversations) => {
-      if (user.user?.id != userNumber) {
-        count += user.user?.name ? user.user?.name.length : 0;
-        if (count > 20) {
-          name += '...do'
-          return name;
-        }
-        name += user.user?.name + ', '
-        count += 2;
-      }
-    });
-    name = name.substring(0, name.length - 2)
-    return name;
+    return props.calculateConversationName(users.conversation?.userPerConversations, 18);
   }
 
   return (
@@ -82,7 +66,7 @@ const SideMenu: FC<ISideMenuProps> = (props: ISideMenuProps) => {
                       </div>
                   }
                 </ListItemIcon>
-                <ListItemText primary={conversationName(userPerConversation)} />
+                <ListItemText primary={handleConversationName(userPerConversation)} />
               </ListItemButton>
             </ListItem>
           ))}

@@ -1,10 +1,12 @@
-import { Box, Grid, Toolbar, Typography } from "@mui/material";
+import { Box, Button, Grid, Toolbar, Typography } from "@mui/material";
 import { FC } from "react";
 import { IConversation } from "../models/IConversation";
+import { IUserPerConversations } from "../models/IUserPerConversations";
 import MessageHeader from "./message-header";
 
 interface IConversationProps {
   conversation: IConversation | undefined
+  calculateConversationName(conversations: IUserPerConversations[], length: number): string
 }
 
 const SIDE_MENU_WIDTH: string = '250px';
@@ -16,12 +18,30 @@ const Conversation: FC<IConversationProps> = (props: IConversationProps) => {
       <Toolbar sx={{ py: 6 }} />
 
       <Grid container direction="column">
-        <Grid item sx={{ backgroundColor: "black", position: 'fixed', width: `calc(100vw - ${SIDE_MENU_WIDTH});` }} >
-          <MessageHeader users={props.conversation?.userPerConversations} />
+        <Grid item sx={{ backgroundColor: "black", position: 'fixed', width: `calc(100vw - ${SIDE_MENU_WIDTH});`, zIndex: 1 }} >
+          <MessageHeader users={props.conversation?.userPerConversations} calculateConversationName={props.calculateConversationName} />
         </Grid>
         <Toolbar sx={{ height: 0 }} />
         <Grid item sx={{ backgroundColor: "red" }} >
-
+          <h1>HERE</h1>
+          <h1>HERE</h1>
+          <h1>HERE</h1>
+          <h1>HERE</h1>
+          <h1>HERE</h1>
+          <h1>HERE</h1>
+          <h1>HERE</h1>
+          <h1>HERE</h1>
+          <h1>HERE</h1><h1>HERE</h1>
+          <h1>HERE</h1>
+          <h1>HERE</h1>
+          <h1>HERE</h1>
+          <h1>HERE</h1>
+          <h1>HERE</h1><h1>HERE</h1>
+          <h1>HERE</h1>
+          <h1>HERE</h1>
+          <h1>HERE</h1><h1>HERE</h1>
+          <h1>HERE</h1>
+          <h1>HERE</h1>
         </Grid>
         <Toolbar sx={{ height: 115, width: 400 }} />
         <Grid item sx={{ backgroundColor: "green", position: 'fixed', bottom: 0, width: `calc(100vw - ${SIDE_MENU_WIDTH});` }} >
