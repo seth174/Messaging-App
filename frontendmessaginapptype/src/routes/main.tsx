@@ -4,6 +4,7 @@ import Conversation from "../components/conversation";
 import MainPageNavBar from "../components/main-page-nav-bar";
 import NavBar from "../components/nav-bar";
 import SideMenu from "../components/side-menu";
+import { IConversation } from "../models/IConversation";
 import { IUser } from "../models/IUser";
 import { IUserPerConversations } from "../models/IUserPerConversations";
 import { getUser } from "../services/UsersApi";
@@ -12,17 +13,14 @@ const Main: FC = () => {
 
   const [user, setUser] = useState<IUser>();
 
+  const [conversation, setConversation] = useState<IConversation | undefined>({} as IConversation);
+
   const [usersPerConversation, setUsersPerConversation] = useState<IUserPerConversations[] | undefined>(undefined);
-
-
-
 
   useEffect(() => {
     const id: number = parseInt(window.sessionStorage.getItem("user_id") || "-100");
     async function getLoggedInUser() {
 
-
-      const token = window.sessionStorage.getItem("token")
 
       const user: IUser = await getUser(id);
       setUser(user);
@@ -39,11 +37,9 @@ const Main: FC = () => {
         <MainPageNavBar />
         <CssBaseline />
 
-        <SideMenu userPerConversations={usersPerConversation} />
-        <Conversation />
+        <SideMenu userPerConversations={usersPerConversation} setConversation={setConversation} />
+        <Conversation conversation={conversation} />
       </Box>
-      <h1>Main Page</h1>
-      <h1>THIS IS THE USERS NAME: {user?.email}</h1>
     </div>
 
   );
