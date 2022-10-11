@@ -81,7 +81,7 @@ namespace BackEndMessagingApp.Controllers
             {
                 return NotFound();
             }
-            var user = _context.Users.First((x) => x.Email == email);
+            var user = await _context.Users.FirstOrDefaultAsync((x) => x.Email == email);
 
             if (user == null)
             {

@@ -1,12 +1,15 @@
 import { Box, Button, Grid, Toolbar, Typography } from "@mui/material";
 import { FC } from "react";
 import { IConversation } from "../models/IConversation";
+import { IUser } from "../models/IUser";
 import { IUserPerConversations } from "../models/IUserPerConversations";
 import MessageHeader from "./message-header";
+import NewConversationSearchBar from "./new-conversation-search-bar"
 
 interface IConversationProps {
   conversation: IConversation | undefined
   calculateConversationName(conversations: IUserPerConversations[], length: number): string
+  users: IUser[]
 }
 
 const SIDE_MENU_WIDTH: string = '250px';
@@ -21,9 +24,11 @@ const Conversation: FC<IConversationProps> = (props: IConversationProps) => {
         <Grid item sx={{ backgroundColor: "black", position: 'fixed', width: `calc(100vw - ${SIDE_MENU_WIDTH});`, zIndex: 1 }} >
           <MessageHeader users={props.conversation?.userPerConversations} calculateConversationName={props.calculateConversationName} />
         </Grid>
-        <Toolbar sx={{ height: 0 }} />
-        <Grid item sx={{ backgroundColor: "red" }} >
-          <h1>HERE</h1>
+        <Grid item sx={{ backgroundColor: "blue", width: `calc(100vw - ${SIDE_MENU_WIDTH});`, position: 'fixed', mt: 8 }} >
+          <NewConversationSearchBar users={props.users} />
+        </Grid>
+        <Grid item sx={{ backgroundColor: "red", my: 19.3 }} >
+          <h1>HERE top</h1>
           <h1>HERE</h1>
           <h1>HERE</h1>
           <h1>HERE</h1>
