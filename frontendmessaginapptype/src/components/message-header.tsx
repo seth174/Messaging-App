@@ -13,7 +13,7 @@ interface IMessageHeaderProps {
 const MessageHeader: FC<IMessageHeaderProps> = (props: IMessageHeaderProps) => {
 
   return (
-    <Box sx={{ py: 1 }}>
+    <Box sx={{ py: 1.5 }}>
       <ThemeProvider theme={theme}>
         <Button
           sx={{ ml: 5 }}

@@ -7,7 +7,7 @@ import SideMenu from "../components/side-menu";
 import { IConversation } from "../models/IConversation";
 import { IUser } from "../models/IUser";
 import { IUserPerConversations } from "../models/IUserPerConversations";
-import { getUser } from "../services/UsersApi";
+import { getUser, getUsers } from "../services/UsersApi";
 
 const Main: FC = () => {
 
@@ -17,16 +17,25 @@ const Main: FC = () => {
 
   const [usersPerConversation, setUsersPerConversation] = useState<IUserPerConversations[] | undefined>(undefined);
 
+  const [users, setUsers] = useState<IUser[]>([]);
+
   useEffect(() => {
     const id: number = parseInt(window.sessionStorage.getItem("user_id") || "-100");
     async function getLoggedInUser() {
-
       const user: IUser = await getUser(id);
       setUser(user);
       setUsersPerConversation(user.userPerConversations);
-
-    };
+    }
     getLoggedInUser();
+  }, []);
+
+
+  useEffect(() => {
+    async function getUsersCall() {
+      const users: IUser[] = await getUsers();
+      setUsers(users);
+    };
+    getUsersCall();
   }, []);
 
   const calculateConversationName = (users: IUserPerConversations[] | undefined, length: number): string => {
@@ -56,7 +65,11 @@ const Main: FC = () => {
         <CssBaseline />
 
         <SideMenu userPerConversations={usersPerConversation} setConversation={setConversation} calculateConversationName={calculateConversationName} />
-        <Conversation conversation={conversation} calculateConversationName={calculateConversationName} />
+        <Conversation
+          conversation={conversation}
+          calculateConversationName={calculateConversationName}
+          users={users}
+        />
       </Box>
     </div>
 
