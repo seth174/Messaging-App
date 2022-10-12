@@ -14,6 +14,8 @@ interface IConversationProps {
 
 const SIDE_MENU_WIDTH: string = '250px';
 
+
+
 const Conversation: FC<IConversationProps> = (props: IConversationProps) => {
   return (
 
