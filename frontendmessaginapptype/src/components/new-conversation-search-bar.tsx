@@ -1,5 +1,5 @@
-import { Box, TextField, Typography } from "@mui/material";
-import { FC, useState } from "react"
+import { Autocomplete, Box, createFilterOptions, FilterOptionsState, TextField, Typography } from "@mui/material";
+import { FC, Fragment, useState } from "react"
 import { IUser } from "../models/IUser";
 
 interface INewConversationSearchBarProps {
@@ -8,42 +8,43 @@ interface INewConversationSearchBarProps {
 
 const NewConversationSearchBar: FC<INewConversationSearchBarProps> = (props: INewConversationSearchBarProps) => {
 
+  const OPTIONS_LIMIT = 8;
+  const defaultFilterOptions = createFilterOptions();
+
   const [email, setEmail] = useState<string>("");
 
-  const [addedUsers, setAddedUsers] = useState<Set<IUser>>(new Set<IUser>);
+  const [addedUsers, setAddedUsers] = useState<IUser[]>([]);
 
-  function handleOnKeyDown(event: React.KeyboardEvent<HTMLImageElement>) {
-    if (event.key == "Enter") {
-      setAddedUsers((oldValue) => {
-        return (
-          {
-            ...oldValue,
+  function handleOnChange(event: React.SyntheticEvent<Element, Event>, element: unknown) {
 
-          }
-        );
-      })
-    }
+    const newUser: IUser = element as IUser;
+    setAddedUsers((oldValue) => {
+      return addedUsers.concat(newUser);
+    })
   }
+
+  const filterOptions = (options: unknown[], state: FilterOptionsState<unknown>) => {
+    return defaultFilterOptions(options, state).slice(0, OPTIONS_LIMIT);
+  };
 
   return (
     <Box>
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
         <Typography sx={{ ml: 2 }}>To: </Typography>
-        <TextField
-          variant="standard" // <== changed this
-          margin="normal"
-          required
+        <Autocomplete
+          filterOptions={filterOptions}
+          options={props.users}
+          autoHighlight
+          renderInput={(params) => (
+            <TextField {...params} variant="standard" />
+          )}
+          getOptionLabel={(option) => (option as IUser).name}
           fullWidth
           id="email"
-          name="email"
-          autoComplete="email"
-          autoFocus
-          onChange={(event: React.ChangeEvent<HTMLInputElement>) => setEmail(event.target.value)}
-          onKeyDown={handleOnKeyDown}
+          autoComplete={true}
+          onInputChange={(event: React.SyntheticEvent<Element, Event>, newValue: any) => setEmail(newValue)}
+          onChange={handleOnChange}
           placeholder="Email of one or more people"
-          InputProps={{
-            //disableUnderline: true, // <== added this
-          }}
           sx={{ mb: 1.5, ml: 2, mr: 8 }}
         />
       </Box>

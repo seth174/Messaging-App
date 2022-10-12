@@ -20,7 +20,7 @@ namespace BackEndMessagingApp.Repository
 		public Tokens Authenticate(LoginRequest2 request, MessagingAppContext context)
 		{
 			IEnumerable<User> users = context.Users;
-			IEnumerable<User> test = users.Where((x) => x.Email == request.Email);
+			IEnumerable<User> test = users.Where((x) => x.Email.Equals(request.Email));
 			if (users.Where((x) => x.Email == request.Email).Count() == 0)
 			{
 				return null;
