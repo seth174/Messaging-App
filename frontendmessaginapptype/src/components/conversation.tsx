@@ -26,7 +26,7 @@ const Conversation: FC<IConversationProps> = (props: IConversationProps) => {
         <Grid item sx={{ backgroundColor: "black", position: 'fixed', width: `calc(100vw - ${SIDE_MENU_WIDTH});`, zIndex: 1 }} >
           <MessageHeader users={props.conversation?.userPerConversations} calculateConversationName={props.calculateConversationName} />
         </Grid>
-        <Grid item sx={{ backgroundColor: "blue", width: `calc(100vw - ${SIDE_MENU_WIDTH});`, position: 'fixed', mt: 8 }} >
+        <Grid item sx={{ backgroundColor: "white", width: `calc(100vw - ${SIDE_MENU_WIDTH});`, position: 'fixed', mt: 8 }} >
           <NewConversationSearchBar users={props.users} />
         </Grid>
         <Grid item sx={{ backgroundColor: "red", my: 19.3 }} >
