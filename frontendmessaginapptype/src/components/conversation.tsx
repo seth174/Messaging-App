@@ -3,6 +3,7 @@ import { FC } from "react";
 import { IConversation } from "../models/IConversation";
 import { IUser } from "../models/IUser";
 import { IUserPerConversations } from "../models/IUserPerConversations";
+import ComposeMessageBox from "./compose-message-box";
 import MessageHeader from "./message-header";
 import NewConversationSearchBar from "./new-conversation-search-bar"
 
@@ -52,7 +53,7 @@ const Conversation: FC<IConversationProps> = (props: IConversationProps) => {
         </Grid>
         <Toolbar sx={{ height: 115, width: 400 }} />
         <Grid item sx={{ backgroundColor: "green", position: 'fixed', bottom: 0, width: `calc(100vw - ${SIDE_MENU_WIDTH});` }} >
-          <h1>test</h1>
+          <ComposeMessageBox />
         </Grid>
       </Grid>
     </Box >

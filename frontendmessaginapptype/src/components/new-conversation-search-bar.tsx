@@ -52,7 +52,7 @@ const NewConversationSearchBar: FC<INewConversationSearchBarProps> = (props: INe
         <Typography sx={{ ml: 2 }}>To: </Typography>
         {addedUsers.map((user, index) => {
           return (
-            <UserBox name={user.name} handleClick={() => cancelAddedUser(user)} />
+            <UserBox key={index} name={user.name} handleClick={() => cancelAddedUser(user)} />
           )
         })}
         <Autocomplete
