@@ -41,7 +41,7 @@ namespace BackEndMessagingApp.Controllers
               return NotFound();
           }
 
-           var users = await _context.Users.ToListAsync();
+           var users = await _context.Users.OrderBy(x => x.Email).ToListAsync();
            return _mapper.Map<List<UserListDTO>>(users);
         }
 
