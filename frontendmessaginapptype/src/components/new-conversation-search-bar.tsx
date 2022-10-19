@@ -24,13 +24,10 @@ const NewConversationSearchBar: FC<INewConversationSearchBarProps> = (props: INe
     const newUser: IUser = element as IUser;
 
     if (addedUsersSet.has(newUser.email)) {
-      console.log("RETURNED")
       return;
     }
 
     addedUsersSet.add(newUser.email);
-
-    console.log("ADDED USERS SET", addedUsersSet)
     setAddedUsers((oldValue) => {
       return addedUsers.concat(newUser);
     })
