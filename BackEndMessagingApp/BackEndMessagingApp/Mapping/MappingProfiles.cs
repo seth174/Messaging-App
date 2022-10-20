@@ -3,6 +3,7 @@ using AutoMapper;
 using BackEndMessagingApp.DTO.UserDTO;
 using BackEndMessagingApp.DTO.ConversationDTO;
 using BackEndMessagingApp.DTO.UserPerConversationDTO;
+using BackEndMessagingApp.DTO.MessageDTO;
 
 namespace BackEndMessagingApp.Mapping
 {
@@ -21,6 +22,8 @@ namespace BackEndMessagingApp.Mapping
             CreateMap<UserPerConversation, UserPerConversationUserDTO>();
 
             CreateMap<Conversation, ConversationDetailsDTO>();
+
+            CreateMap<MessageCreateDTO, Message>();
 
 
 
