@@ -126,7 +126,7 @@ namespace BackEndMessagingApp.Controllers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [AllowAnonymous]
         [HttpPost]
-        public async Task<ActionResult<User>> PostUser(UserCreateDto user)
+        public async Task<ActionResult<UserCreateDto>> PostUser(UserCreateDto user)
         {
           if (_context.Users == null)
           {

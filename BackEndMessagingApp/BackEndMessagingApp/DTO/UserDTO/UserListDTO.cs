@@ -7,9 +7,9 @@ namespace BackEndMessagingApp.DTO.UserDTO
         public int Id { get; set; }
 
         [StringLength(30)]
-        public string Name { get; set; }
+        public string Name { get; set; } = null!;
 
         [StringLength(150)]
-        public string Email { get; set; }
+        public string Email { get; set; } = null!;
     }
 }

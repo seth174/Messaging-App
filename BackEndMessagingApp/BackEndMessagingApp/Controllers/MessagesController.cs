@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using BackEndMessagingApp.Data;
 using BackEndMessagingApp.Models;
+using BackEndMessagingApp.DTO.MessageDTO;
+using AutoMapper;
 
 namespace BackEndMessagingApp.Controllers
 {
@@ -16,9 +18,12 @@ namespace BackEndMessagingApp.Controllers
     {
         private readonly MessagingAppContext _context;
 
-        public MessagesController(MessagingAppContext context)
+        private readonly IMapper _mapper;
+
+        public MessagesController(MessagingAppContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         // GET: api/Messages
@@ -84,16 +89,18 @@ namespace BackEndMessagingApp.Controllers
         // POST: api/Messages
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Message>> PostMessage(Message message)
+        public async Task<ActionResult<MessageCreateDTO>> PostMessage(MessageCreateDTO message)
         {
           if (_context.Messages == null)
           {
               return Problem("Entity set 'MessagingAppContext.Messages'  is null.");
           }
-            _context.Messages.Add(message);
+
+            var newMessage = _mapper.Map<Message>(message);
+            _context.Messages.Add(newMessage);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetMessage", new { id = message.Id }, message);
+            return CreatedAtAction("GetMessage", new { id = message.Id }, newMessage);
         }
 
         // DELETE: api/Messages/5
