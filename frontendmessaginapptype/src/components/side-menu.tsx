@@ -37,7 +37,7 @@ const SideMenu: FC<ISideMenuProps> = (props: ISideMenuProps) => {
       <Box>
         <List>
           <ListItem disablePadding>
-            <ListItemButton>
+            <ListItemButton onClick={() => props.setConversation(undefined)}>
               <ListItemIcon>
                 <CreateIcon color="primary" />
               </ListItemIcon>

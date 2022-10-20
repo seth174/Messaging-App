@@ -25,12 +25,15 @@ const Conversation: FC<IConversationProps> = (props: IConversationProps) => {
 
       <Grid container direction="column">
         <Grid item sx={{ backgroundColor: "black", position: 'fixed', width: `calc(100vw - ${SIDE_MENU_WIDTH});`, zIndex: 1 }} >
-          <MessageHeader users={props.conversation?.userPerConversations} calculateConversationName={props.calculateConversationName} />
+          {
+            props.conversation == undefined ? <Typography sx={{ py: 1.5, color: 'white' }}>New Conversation</Typography> :
+              <MessageHeader users={props.conversation?.userPerConversations} calculateConversationName={props.calculateConversationName} />
+          }
         </Grid>
         <Grid item sx={{ backgroundColor: "white", width: `calc(100% - ${SIDE_MENU_WIDTH});`, position: 'fixed', mt: 8 }} >
-          <NewConversationSearchBar users={props.users} />
+          {props.conversation == undefined && <NewConversationSearchBar users={props.users} />}
         </Grid>
-        <Grid item sx={{ backgroundColor: "red", my: 19.3, width: `calc(100% - ${SIDE_MENU_WIDTH});` }} >
+        <Grid item sx={{ backgroundColor: "red", my: 15, width: `calc(100% - ${SIDE_MENU_WIDTH});`, position: 'absolute' }} >
           <h1>HERE top</h1>
           <h1>HERE</h1>
           <h1>HERE</h1>
@@ -49,9 +52,9 @@ const Conversation: FC<IConversationProps> = (props: IConversationProps) => {
           <h1>HERE</h1>
           <h1>HERE</h1><h1>HERE</h1>
           <h1>HERE</h1>
-          <h1>HERE</h1>
+          <h1>HERE bottto</h1>
         </Grid>
-        <Toolbar sx={{ height: 115, width: 400 }} />
+        <Toolbar sx={{ height: 1000, width: 400 }} />
         <Grid item sx={{ backgroundColor: "white", position: 'fixed', bottom: 0, width: `calc(100% - ${SIDE_MENU_WIDTH});` }} >
           <ComposeMessageBox />
         </Grid>

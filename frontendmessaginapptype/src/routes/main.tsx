@@ -13,7 +13,7 @@ const Main: FC = () => {
 
   const [user, setUser] = useState<IUser>();
 
-  const [conversation, setConversation] = useState<IConversation | undefined>({} as IConversation);
+  const [conversation, setConversation] = useState<IConversation | undefined>(undefined);
 
   const [usersPerConversation, setUsersPerConversation] = useState<IUserPerConversations[] | undefined>(undefined);
 
