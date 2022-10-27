@@ -56,7 +56,7 @@ const Conversation: FC<IConversationProps> = (props: IConversationProps) => {
         </Grid>
         <Toolbar sx={{ height: 1000, width: 400 }} />
         <Grid item sx={{ backgroundColor: "white", position: 'fixed', bottom: 0, width: `calc(100% - ${SIDE_MENU_WIDTH});` }} >
-          <ComposeMessageBox />
+          <ComposeMessageBox conversation={props.conversation}/>
         </Grid>
       </Grid>
     </Box >

@@ -10,6 +10,7 @@ namespace BackEndMessagingApp.Models
         public string? ImageURL { get; set; }
         [ForeignKey("user")]
         public int UserId { get; set; }
+        public int ConversationId { get; set; }
         public User User { get; set; }
         public ICollection<MessageReactionPerUser>? MessageReactionPerUsers { get; set; }
         public ICollection<DeletedMessage>? DeletedMessages { get; set; }
