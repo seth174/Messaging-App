@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BackEndMessagingApp.Migrations
 {
     [DbContext(typeof(MessagingAppContext))]
-    [Migration("20220930191608_test")]
-    partial class test
+    [Migration("20221027155154_AddingConversationForeignKey")]
+    partial class AddingConversationForeignKey
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -97,6 +97,9 @@ namespace BackEndMessagingApp.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("ConversationId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
@@ -190,7 +193,7 @@ namespace BackEndMessagingApp.Migrations
             modelBuilder.Entity("BackEndMessagingApp.Models.DeletedConversation", b =>
                 {
                     b.HasOne("BackEndMessagingApp.Models.Conversation", "Conversation")
-                        .WithMany()
+                        .WithMany("DeletedConversations")
                         .HasForeignKey("ConversationId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -264,7 +267,7 @@ namespace BackEndMessagingApp.Migrations
                         .IsRequired();
 
                     b.HasOne("BackEndMessagingApp.Models.User", "User")
-                        .WithMany("userPerConversationsS")
+                        .WithMany("userPerConversations")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -276,6 +279,8 @@ namespace BackEndMessagingApp.Migrations
 
             modelBuilder.Entity("BackEndMessagingApp.Models.Conversation", b =>
                 {
+                    b.Navigation("DeletedConversations");
+
                     b.Navigation("UserPerConversations");
                 });
 
@@ -296,7 +301,7 @@ namespace BackEndMessagingApp.Migrations
 
                     b.Navigation("messagesReactionPerUser");
 
-                    b.Navigation("userPerConversationsS");
+                    b.Navigation("userPerConversations");
                 });
 #pragma warning restore 612, 618
         }
