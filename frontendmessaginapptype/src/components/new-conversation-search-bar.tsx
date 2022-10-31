@@ -44,7 +44,7 @@ const NewConversationSearchBar: FC<INewConversationSearchBarProps> = (props: INe
   };
 
   return (
-    <Box>
+    <Box sx={{backgroundColor: "green", py: 1.5}}>
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
         <Typography sx={{ ml: 2 }}>To: </Typography>
         {addedUsers.map((user, index) => {
