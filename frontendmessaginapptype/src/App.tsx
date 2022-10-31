@@ -86,7 +86,6 @@ function App() {
             </Routes>
           }
         </BrowserRouter>
-        <h1>Is authenticated: {isAuthenticated ? "true" : "false"}</h1>
       </authenticatedContext.Provider >
     </div>
   );
