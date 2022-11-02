@@ -60,7 +60,7 @@ namespace BackEndMessagingApp.Controllers
         }
 
         // GET: api/Conversations/5/messages
-        [HttpGet("api/Conversations/{id}/messages")]
+        [HttpGet("/api/Conversations/{id}/Messages")]
         public async Task<ActionResult<ConversationMessageListDTO>> GetMessages(int id)
         {
             if (_context.Conversations == null)

@@ -1,3 +1,4 @@
+import { IMessage } from "./IMessage"
 import { IUserPerConversations } from "./IUserPerConversations"
 
 export interface IConversation {
@@ -5,4 +6,6 @@ export interface IConversation {
   title?: string
 
   userPerConversations?: IUserPerConversations[]
+
+  messages?: IMessage[]
 }
