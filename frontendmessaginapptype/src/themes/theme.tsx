@@ -11,3 +11,13 @@ export const theme = createTheme({
     },
   },
 });
+
+export const MessageTextTheme = createTheme({
+
+  typography: {
+    fontSize: 20,
+    h5: {
+
+    }
+  },
+});
