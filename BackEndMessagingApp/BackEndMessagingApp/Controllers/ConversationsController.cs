@@ -54,9 +54,30 @@ namespace BackEndMessagingApp.Controllers
                 return NotFound();
             }
 
-            _mapper.Map<ConversationDetailsDTO>(conversation);
+            var newConversation = _mapper.Map<ConversationDetailsDTO>(conversation);
 
-            return Ok(conversation);
+            return Ok(newConversation);
+        }
+
+        // GET: api/Conversations/5/messages
+        [HttpGet("api/Conversations/{id}/messages")]
+        public async Task<ActionResult<ConversationMessageListDTO>> GetMessages(int id)
+        {
+            if (_context.Conversations == null)
+            {
+                return NotFound();
+            }
+            //var conversation = _context.Conversations.Include(x => x.Messages).ThenInclude(x => x.User).Where(x => x.Id == id);
+            var conversation = await _context.Conversations.Include(x => x.Messages.OrderBy(x => x.CreatedDate)).ThenInclude(x => x.User).FirstOrDefaultAsync(x => x.Id == id);
+
+            if (conversation == null)
+            {
+                return NotFound();
+            }
+
+            var newConversation = _mapper.Map<ConversationMessageListDTO>(conversation);
+
+            return Ok(newConversation);
         }
 
         // PUT: api/Conversations/5

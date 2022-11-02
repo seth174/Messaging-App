@@ -10,5 +10,7 @@ namespace BackEndMessagingApp.Models
         public string? Title { get; set; }
         public ICollection<UserPerConversation>? UserPerConversations { get; set; }
         public ICollection<DeletedConversation>? DeletedConversations   { get; set; }
+
+        public ICollection<Message>? Messages { get; set; }
     }
 }
