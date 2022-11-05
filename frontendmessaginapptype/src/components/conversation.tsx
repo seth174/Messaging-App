@@ -26,7 +26,10 @@ const Conversation: FC<IConversationProps> = (props: IConversationProps) => {
   useEffect(() => {
     async function getMessages() {
       const conversationId: number | undefined = props.conversation?.id;
-      if (conversationId == undefined) return;
+      if (conversationId == undefined) {
+        setConversationMessages(undefined);
+        return;
+      }
       const conversation: IConversation = await getConversationMessages(conversationId);
       setConversationMessages(conversation);
     };
