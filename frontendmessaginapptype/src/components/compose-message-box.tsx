@@ -16,22 +16,17 @@ const ComposeMessageBox: FC<IComposeMessageBoxProps> = (props: IComposeMessageBo
   const [message, setMessage] = useState<string>("");
 
   const handleDataChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const newValue : string = event.target.value;
-    if(newValue.length > 0 && newValue.substring(newValue.length - 1) === '\n') {
-      
+    const newValue: string = event.target.value;
+    if (newValue.length > 0 && newValue.substring(newValue.length - 1) === '\n') {
+
       const stringUserId = window.sessionStorage.getItem("user_id")
-      const user_id : number = stringUserId  != null ? +stringUserId : -1;
-      const newMessage : IMessage = {userId: user_id, createdDate: new Date(), messageText: message, conversationId: props.conversation?.id} as IMessage;
+      const user_id: number = stringUserId != null ? +stringUserId : -1;
+      const newMessage: IMessage = { userId: user_id, createdDate: new Date(), messageText: message, conversationId: props.conversation?.id } as IMessage;
       postMessage(newMessage);
       setMessage("");
       return;
     }
     setMessage(newValue);
-  }
-
-  const handleKeyPressed = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if(event.key === 'Enter' ){
-       console.log('enter*');}
   }
 
   return (
@@ -43,7 +38,6 @@ const ComposeMessageBox: FC<IComposeMessageBoxProps> = (props: IComposeMessageBo
         variant="standard"
         value={message}
         onChange={(event: React.ChangeEvent<HTMLInputElement>) => handleDataChange(event)}
-        onKeyDown={(event: React.KeyboardEvent<HTMLInputElement>) => handleKeyPressed(event)}
       />
       <IconButton
         color="success"
