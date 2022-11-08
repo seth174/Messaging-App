@@ -20,9 +20,16 @@ const DisplayMessages: FC<IDisplayMessagesProps> = (props: IDisplayMessagesProps
       {props.messages?.map((message: IMessage, index: number) => {
         const stringUserId = window.sessionStorage.getItem("user_id")
         const user_id: number = stringUserId != null ? +stringUserId : -1;
-        const isMyMessage: boolean = message.user?.id == user_id;
+        let isMyMessage: boolean = false;
+
+        if (message.user == null) {
+          isMyMessage = message.userId == user_id;
+        }
+        else {
+          isMyMessage = message.user?.id == user_id;
+        }
         return (
-          <ThemeProvider theme={MessageTextTheme}>
+          <ThemeProvider theme={MessageTextTheme} key={index}>
             <Box sx={{ textAlign: isMyMessage ? 'right' : 'left' }}>
               <Box
                 sx={{

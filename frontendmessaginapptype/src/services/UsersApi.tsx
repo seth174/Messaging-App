@@ -22,7 +22,7 @@ export const getUsers = async (): Promise<IUser[]> => {
 
 export const addUsers = (user: IUser) => {
   axios
-    .post(`${BASE_URL}users/`, user)
+    .post(`${BASE_URL}users/`, user, getHeader())
     .then((result) => {
       console.log(result);
     })
@@ -50,7 +50,7 @@ export const getUser = async (id: number): Promise<IUser> => {
 
 export const getUserByEmail = async (email: string): Promise<IUser> => {
   const response = await axios
-    .get(`${BASE_URL}users/GetUser/${email}`)
+    .get(`${BASE_URL}users/GetUser/${email}`, getHeader())
     .then((result: { data: IUser; }) => {
       const response: IUser = result.data;
       return response;

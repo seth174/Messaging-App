@@ -6,9 +6,13 @@ import { Form } from "react-router-dom";
 import { IConversation } from "../models/IConversation";
 import { IMessage } from "../models/IMessage";
 import postMessage from '../services/MessageApi';
+import { sendMessage } from "@microsoft/signalr/dist/esm/Utils";
 
 interface IComposeMessageBoxProps {
   conversation?: IConversation
+  sendMessage: (message: IMessage) => Promise<void>
+
+  setConversationMessage: (value: IConversation | ((prevVar: IConversation | undefined) => IConversation | undefined)) => void;
 }
 
 const ComposeMessageBox: FC<IComposeMessageBoxProps> = (props: IComposeMessageBoxProps) => {
@@ -23,6 +27,14 @@ const ComposeMessageBox: FC<IComposeMessageBoxProps> = (props: IComposeMessageBo
       const user_id: number = stringUserId != null ? +stringUserId : -1;
       const newMessage: IMessage = { userId: user_id, createdDate: new Date(), messageText: message, conversationId: props.conversation?.id } as IMessage;
       postMessage(newMessage);
+      props.setConversationMessage((oldValue) => {
+        if (oldValue?.messages == undefined) return;
+        return {
+          ...oldValue,
+          messages: [...oldValue?.messages, newMessage]
+        }
+      });
+      props.sendMessage(newMessage);
       setMessage("");
       return;
     }

@@ -1,6 +1,8 @@
+using BackEndMessagingApp.Hubs;
 using BackEndMessagingApp.Mapping;
 using BackEndMessagingApp.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -30,10 +32,21 @@ builder.Services.AddAuthentication(x =>
 
 builder.Services.AddControllers();
 
+/*builder.Services.AddCors(options =>
+{
+	options.AddDefaultPolicy(builder =>
+	{
+		builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod().AllowCredentials();
+
+	});
+});*/
+
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddSignalR();
 
 builder.Services.AddDbContext<BackEndMessagingApp.Data.MessagingAppContext>(
     options =>
@@ -52,7 +65,14 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
+app.UseRouting();
+
+app.MapHub<ChatHub>("/chat");
+
+app.UseCors(builder =>
+{
+	builder.SetIsOriginAllowed(origin => true).AllowAnyHeader().AllowAnyMethod().AllowCredentials();
+});
 
 app.UseHttpsRedirection();
 
