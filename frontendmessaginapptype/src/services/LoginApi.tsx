@@ -9,7 +9,7 @@ const BASE_URL = 'https://localhost:7060/api/'
 const loginUser = async (request: ILoginRequest): Promise<IToken> => {
   console.log('here', request)
   const token = await axios
-    .post(`${BASE_URL}Users/authenticate`, request)
+    .post(`${BASE_URL}Users/authenticate`, request, { headers: { "Access-Control-Allow-Origin": "*" } })
     .then((result: { data: IToken; }) => {
       const token: IToken = result.data;
       return token;

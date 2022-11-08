@@ -13,6 +13,8 @@ interface ISideMenuProps {
   setConversation: React.Dispatch<React.SetStateAction<IConversation | undefined>>
 
   calculateConversationName(conversations: IUserPerConversations[] | undefined, length: number): string
+
+  joinConversation(conversation: IConversation): void
 }
 
 const SideMenu: FC<ISideMenuProps> = (props: ISideMenuProps) => {
@@ -22,6 +24,13 @@ const SideMenu: FC<ISideMenuProps> = (props: ISideMenuProps) => {
       return users.conversation.title;
     }
     return props.calculateConversationName(users.conversation?.userPerConversations, 18);
+  }
+
+  function selectConversation(userPerConversation: IUserPerConversations) {
+
+    props.setConversation(userPerConversation.conversation);
+    if (userPerConversation.conversation == undefined) return;
+    props.joinConversation(userPerConversation.conversation);
   }
 
   return (
@@ -46,7 +55,7 @@ const SideMenu: FC<ISideMenuProps> = (props: ISideMenuProps) => {
           </ListItem >
           {props.userPerConversations?.map((userPerConversation, index) => (
             <ListItem key={index} disablePadding>
-              <ListItemButton onClick={() => props.setConversation(userPerConversation.conversation)} >
+              <ListItemButton onClick={() => selectConversation(userPerConversation)} >
                 <ListItemIcon>
                   {userPerConversation?.conversation?.userPerConversations?.length == 2 ?
                     <div>
