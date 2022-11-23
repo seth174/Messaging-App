@@ -20,15 +20,17 @@ export const getUsers = async (): Promise<IUser[]> => {
   return response;
 }
 
-export const addUsers = (user: IUser) => {
-  axios
+export const addUsers = async (user: IUser): Promise<IUser> => {
+  const result: IUser = await axios
     .post(`${BASE_URL}users/`, user, getHeader())
     .then((result) => {
-      console.log(result);
+      return result.data;
     })
     .catch((err) => {
-      console.log("POST ERR:", err);
+      return {} as IUser;
     });
+  console.log("FINAL", result);
+  return result;
 };
 
 export const getUser = async (id: number): Promise<IUser> => {

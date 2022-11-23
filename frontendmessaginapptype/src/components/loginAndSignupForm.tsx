@@ -7,6 +7,7 @@ import NavBar from './nav-bar';
 interface ILoginAndSignUpProps {
 
 	textFields: any;
+
 	buttons: any;
 
 	onSubmit: any;
@@ -14,7 +15,7 @@ interface ILoginAndSignUpProps {
 	topText: string;
 }
 
-const Signup: React.FC<ILoginAndSignUpProps> = (props: ILoginAndSignUpProps) => {
+const LoginAndSignUp: React.FC<ILoginAndSignUpProps> = (props: ILoginAndSignUpProps) => {
 	return (
 		<Box>
 			<NavBar />
@@ -40,4 +41,4 @@ const Signup: React.FC<ILoginAndSignUpProps> = (props: ILoginAndSignUpProps) => 
 	);
 }
 
-export default Signup;
+export default LoginAndSignUp;
