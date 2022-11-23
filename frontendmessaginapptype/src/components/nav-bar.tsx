@@ -25,15 +25,20 @@ const NavBar: FC = () => {
           <MessageOutlinedIcon />
         </IconButton>
 
-        <Typography variant='h6' sx={{
-          mr: 2,
-          display: { xs: 'none', md: 'flex' },
-          fontWeight: 700,
-          letterSpacing: '.3rem',
-          color: 'inherit',
-          textDecoration: 'none',
-          flexGrow: 1
-        }}>Seth's Messaging App</Typography>
+        <Typography
+          variant='h6'
+          sx={{
+            mr: 2,
+            display: { xs: 'none', md: 'flex' },
+            fontWeight: 700,
+            letterSpacing: '.3rem',
+            color: 'inherit',
+            textDecoration: 'none',
+            flexGrow: 1
+          }}
+        >
+          Seth's Messaging App
+        </Typography>
         <NavButton
           color="inherit"
           sx={{ mx: 2 }}

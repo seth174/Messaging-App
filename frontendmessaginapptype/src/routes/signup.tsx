@@ -14,8 +14,7 @@ import { authenticatedContext } from '../context/authenticated-context';
 const Signup: React.FC = () => {
 
   const navigate = useNavigate();
-  const goConversations = () => navigate('/mainpage', { replace: true });
-  const { isAuthenticated, setIsAuthenticated } = useContext(authenticatedContext);
+  const goToLogin = () => navigate('/login', { replace: true });
 
   interface IFormData extends IUser {
     confirmPassword: string
@@ -51,8 +50,7 @@ const Signup: React.FC = () => {
       return;
     }
     generateHashPasswordAndSubmit(formData);
-    setIsAuthenticated(true);
-    goConversations();
+    goToLogin();
   }
 
 
@@ -73,7 +71,6 @@ const Signup: React.FC = () => {
 
   function generateHashPasswordAndSubmit(user: IFormData) {
     const bcrypt = require('bcryptjs');
-    console.log('final step');
     bcrypt.genSalt(10, function (err: any, salt: string) {
       bcrypt.hash(user.password, salt, function (err: any, hash: string) {
         const newUser = {
