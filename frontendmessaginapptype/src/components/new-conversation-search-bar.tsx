@@ -23,6 +23,8 @@ const NewConversationSearchBar: FC<INewConversationSearchBarProps> = (props: INe
 
     const newUser: IUser = element as IUser;
 
+    setEmail("");
+
     if (addedUsersSet.has(newUser.email)) {
       return;
     }
@@ -30,11 +32,11 @@ const NewConversationSearchBar: FC<INewConversationSearchBarProps> = (props: INe
     addedUsersSet.add(newUser.email);
     setAddedUsers((oldValue) => {
       return addedUsers.concat(newUser);
-    })
+    });
+
   }
 
   function cancelAddedUser(user: IUser) {
-    console.log("ADDED USERS SET", addedUsersSet)
     setAddedUsers((oldValue) => oldValue.filter(item => item !== user))
     addedUsersSet.delete(user.email);
   }
@@ -42,8 +44,6 @@ const NewConversationSearchBar: FC<INewConversationSearchBarProps> = (props: INe
   const filterOptions = (options: unknown[], state: FilterOptionsState<unknown>) => {
     return defaultFilterOptions(options, state).slice(0, OPTIONS_LIMIT);
   };
-
-  console.log(addedUsers);
 
   return (
     <Box sx={{ backgroundColor: "green", py: 1.5 }}>
@@ -55,6 +55,7 @@ const NewConversationSearchBar: FC<INewConversationSearchBarProps> = (props: INe
           )
         })}
         <Autocomplete
+          value={email}
           filterOptions={filterOptions}
           options={props.users}
           autoHighlight
@@ -62,7 +63,8 @@ const NewConversationSearchBar: FC<INewConversationSearchBarProps> = (props: INe
           renderInput={(params) => (
             <TextField {...params} variant="standard" />
           )}
-          getOptionLabel={(option) => (option as IUser).name}
+          isOptionEqualToValue={(option : any, value : any) => option.email === value}
+          getOptionLabel={(option) => (option as IUser).name ?? email}
           fullWidth
           id="email"
           autoComplete={true}
