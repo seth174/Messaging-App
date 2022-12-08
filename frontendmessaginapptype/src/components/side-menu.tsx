@@ -1,5 +1,5 @@
 import { AppBar, Box, CssBaseline, Divider, Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Toolbar, Typography } from "@mui/material";
-import { FC, useEffect, useState } from "react";
+import { FC } from "react";
 import PersonIcon from '@mui/icons-material/Person';
 import AddIcon from '@mui/icons-material/Add';
 import { IConversation } from "../models/IConversation";
