@@ -20,6 +20,7 @@ namespace BackEndMessagingApp.Mapping
             
             CreateMap<UserPerConversation, UserPerConversationConversationDTO>();
             CreateMap<UserPerConversation, UserPerConversationUserDTO>();
+            CreateMap<UserPerConversationCreateDTO, UserPerConversation>();
 
             CreateMap<Conversation, ConversationDetailsDTO>();
 

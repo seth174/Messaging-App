@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using BackEndMessagingApp.Data;
 using BackEndMessagingApp.Models;
+using BackEndMessagingApp.DTO.UserPerConversationDTO;
+using AutoMapper;
 
 namespace BackEndMessagingApp.Controllers
 {
@@ -15,10 +17,12 @@ namespace BackEndMessagingApp.Controllers
     public class UserPerConversationsController : ControllerBase
     {
         private readonly MessagingAppContext _context;
+        private readonly IMapper _mapper;
 
-        public UserPerConversationsController(MessagingAppContext context)
+        public UserPerConversationsController(MessagingAppContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         // GET: api/UserPerConversations
@@ -50,25 +54,19 @@ namespace BackEndMessagingApp.Controllers
             return userPerConversation;
         }
 
-
-        // DELETE: api/UserPerConversations/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteUserPerConversation(int id)
+        [HttpPost]
+        public async Task<ActionResult<UserPerConversationCreateDTO>> PostUserPerConversation(UserPerConversationCreateDTO newUserPerConversation)
         {
-            if (_context.UserPerConversations == null)
+            if(_context.UserPerConversations == null)
             {
-                return NotFound();
-            }
-            var userPerConversation = await _context.UserPerConversations.FindAsync(id);
-            if (userPerConversation == null)
-            {
-                return NotFound();
+                return Problem("Entity set 'MessagingAppContext.Messages'  is null.");
             }
 
-            _context.UserPerConversations.Remove(userPerConversation);
+            var userPerConversation = _mapper.Map<UserPerConversation>(newUserPerConversation);
+            _context.UserPerConversations.Add(userPerConversation);
             await _context.SaveChangesAsync();
 
-            return NoContent();
+            return CreatedAtAction(nameof(UserPerConversationsController.GetUserPerConversation), new { Id = 1, Version = "1.0" }, newUserPerConversation);
         }
 
     }
