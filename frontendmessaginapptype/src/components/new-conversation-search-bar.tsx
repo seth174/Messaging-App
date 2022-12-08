@@ -1,8 +1,7 @@
 import { Autocomplete, Box, createFilterOptions, FilterOptionsState, IconButton, TextField, Typography } from "@mui/material";
-import { FC, Fragment, useState } from "react"
+import { FC, useState } from "react"
 import { IUser } from "../models/IUser";
 import UserBox from "./user-box";
-import CloseIcon from '@mui/icons-material/Close';
 
 interface INewConversationSearchBarProps {
   users: IUser[]
@@ -74,7 +73,6 @@ const NewConversationSearchBar: FC<INewConversationSearchBarProps> = (props: INe
           sx={{ mb: 1.5, ml: 2, mr: 8 }}
         />
       </Box>
-
     </Box>
   );
 }
