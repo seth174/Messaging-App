@@ -6,7 +6,7 @@ namespace BackEndMessagingApp.DTO.UserPerConversationDTO
     public class UserPerConversationDTO
     {
 
-        public ConversationListDTO? Conversation { get; set; }
+        public ConversationUserListDTO? Conversation { get; set; }
 
         public UserListDTO User { get; set; }
     }

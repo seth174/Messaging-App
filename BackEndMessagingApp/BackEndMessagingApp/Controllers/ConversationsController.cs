@@ -27,21 +27,21 @@ namespace BackEndMessagingApp.Controllers
 
         // GET: api/Conversations
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ConversationDetailsDTO>>> GetConversations()
+        public async Task<ActionResult<IEnumerable<ConversationUserListDTO>>> GetConversations()
         {
           if (_context.Conversations == null)
           {
               return NotFound();
           }
             var conversations = await _context.Conversations.Include(x => x.UserPerConversations).ThenInclude(x => x.User).ToListAsync();
-            var conversationsDTO = _mapper.Map<IEnumerable<ConversationDetailsDTO>>(conversations);
+            var conversationsDTO = _mapper.Map<IEnumerable<ConversationUserListDTO>>(conversations);
 
             return Ok(conversationsDTO);
         }
 
         // GET: api/Conversations/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<ConversationDetailsDTO>> GetConversation(int id)
+        public async Task<ActionResult<ConversationUserListDTO>> GetConversation(int id)
         {
           if (_context.Conversations == null)
           {
@@ -54,7 +54,7 @@ namespace BackEndMessagingApp.Controllers
                 return NotFound();
             }
 
-            var newConversation = _mapper.Map<ConversationDetailsDTO>(conversation);
+            var newConversation = _mapper.Map<ConversationUserListDTO>(conversation);
 
             return Ok(newConversation);
         }
@@ -114,16 +114,17 @@ namespace BackEndMessagingApp.Controllers
         // POST: api/Conversations
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Conversation>> PostConversation(ConversationDetailsDTO conversation)
+        public async Task<ActionResult<ConversationDetailsDTO>> PostConversation(ConversationCreateDTO conversation)
         {
           if (_context.Conversations == null)
           {
               return Problem("Entity set 'MessagingAppContext.Conversations'  is null.");
           }
-            _context.Conversations.Add(_mapper.Map<Conversation>(conversation));
+            Conversation newConversation = _mapper.Map<Conversation>(conversation);
+            _context.Conversations.Add(newConversation);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetConversation", new { id = conversation.Id }, conversation);
+            return CreatedAtAction("GetConversation", new { id = newConversation.Id }, _mapper.Map<ConversationDetailsDTO>(newConversation));
         }
 
         // DELETE: api/Conversations/5

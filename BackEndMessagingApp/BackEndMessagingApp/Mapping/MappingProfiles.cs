@@ -15,9 +15,12 @@ namespace BackEndMessagingApp.Mapping
             CreateMap<User, UserListDTO>();
             CreateMap<User, UserDetailsDTO>();
             CreateMap<UserCreateDto, User>();
-            CreateMap<Conversation, ConversationListDTO>();
-            CreateMap<ConversationDetailsDTO, Conversation>();
-            
+            CreateMap<Conversation, ConversationUserListDTO>();
+            CreateMap<ConversationUserListDTO, Conversation>();
+
+            CreateMap<ConversationCreateDTO, Conversation>();
+            CreateMap<Conversation, ConversationDetailsDTO>();
+
             CreateMap<UserPerConversation, UserPerConversationConversationDTO>();
             CreateMap<UserPerConversation, UserPerConversationUserDTO>();
             CreateMap<UserPerConversationCreateDTO, UserPerConversation>();

@@ -9,7 +9,5 @@ namespace BackEndMessagingApp.DTO.ConversationDTO
 
         [StringLength(150)]
         public string? Title { get; set; }
-        public string? description { get; set; }
-        public ICollection<UserPerConversationUserDTO> UserPerConversations { get; set; }
     }
 }
