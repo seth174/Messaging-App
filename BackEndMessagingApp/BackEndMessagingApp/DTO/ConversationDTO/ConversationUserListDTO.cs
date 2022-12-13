@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BackEndMessagingApp.DTO.ConversationDTO
 {
-    public class ConversationListDTO
+    public class ConversationUserListDTO
     {
         public int Id { get; set; }
 
