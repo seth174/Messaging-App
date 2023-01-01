@@ -3,7 +3,6 @@ import { AppBar, Box, Button, CssBaseline, Toolbar, Typography } from "@mui/mate
 import React, { FC, useEffect, useState } from "react";
 import Conversation from "../components/conversation";
 import MainPageNavBar from "../components/main-page-nav-bar";
-import NavBar from "../components/nav-bar";
 import SideMenu from "../components/side-menu";
 import { IConversation } from "../models/IConversation";
 import { IMessage } from "../models/IMessage";
@@ -72,8 +71,6 @@ const Main: FC = () => {
 
       connection.on("ReceiveMessage", (message) => {
 
-        console.log("WE RECEIVED it!")
-
         setConversationMessages((oldValue: IConversation | undefined) => {
           if (oldValue?.messages == undefined) return;
           return {
@@ -123,6 +120,7 @@ const Main: FC = () => {
           users={users}
           sendMessage={sendMessage}
           setConversationMessages={setConversationMessages}
+          setConversation={setConversation}
           conversationMessages={conversationMessages}
         />
       </Box>

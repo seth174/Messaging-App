@@ -9,6 +9,7 @@ using BackEndMessagingApp.Data;
 using BackEndMessagingApp.Models;
 using AutoMapper;
 using BackEndMessagingApp.DTO.ConversationDTO;
+using BackEndMessagingApp.DTO.UserDTO;
 
 namespace BackEndMessagingApp.Controllers
 {
@@ -151,5 +152,13 @@ namespace BackEndMessagingApp.Controllers
         {
             return (_context.Conversations?.Any(e => e.Id == id)).GetValueOrDefault();
         }
+
+        /*[HttpPost("Search")]
+        public async Task<ActionResult<long>> SearchConversation(ConversationSearchDTO users)
+        {
+            var result = _context.Conversations.Include(x => x.UserPerConversations).ThenInclude(x => x.User).Where(x => x.Id == users.userIds[0]);
+            return Ok(result);
+        }
+        */
     }
 }

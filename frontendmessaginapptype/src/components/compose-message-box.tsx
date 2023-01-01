@@ -2,27 +2,31 @@ import { Box, IconButton, makeStyles, TextField } from "@mui/material";
 import { FC, useState } from "react";
 import SendIcon from '@mui/icons-material/Send';
 import React from "react";
-import { Form } from "react-router-dom";
 import { IConversation } from "../models/IConversation";
 import { IMessage } from "../models/IMessage";
 import postMessage from '../services/MessageApi';
-import { sendMessage } from "@microsoft/signalr/dist/esm/Utils";
 
 interface IComposeMessageBoxProps {
   conversation?: IConversation
+  setConversation: React.Dispatch<React.SetStateAction<IConversation | undefined>>;
   sendMessage: (message: IMessage) => Promise<void>
-
   setConversationMessage: (value: IConversation | ((prevVar: IConversation | undefined) => IConversation | undefined)) => void;
+  createConversation: () => Promise<IConversation>;
+  addUsersToConversation: (conversationId: number) => void;
 }
 
 const ComposeMessageBox: FC<IComposeMessageBoxProps> = (props: IComposeMessageBoxProps) => {
 
   const [message, setMessage] = useState<string>("");
 
-  const handleDataChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleDataChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const newValue: string = event.target.value;
     if (newValue.length > 0 && newValue.substring(newValue.length - 1) === '\n') {
-
+      if (props.conversation == null) {
+        const newConversation = await props.createConversation();
+        props.addUsersToConversation(newConversation.id!);
+        props.setConversation(newConversation);
+      }
       const stringUserId = window.sessionStorage.getItem("user_id")
       const user_id: number = stringUserId != null ? +stringUserId : -1;
       const newMessage: IMessage = { userId: user_id, createdDate: new Date(), messageText: message, conversationId: props.conversation?.id } as IMessage;

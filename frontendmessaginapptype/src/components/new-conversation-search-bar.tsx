@@ -1,10 +1,12 @@
 import { Autocomplete, Box, createFilterOptions, FilterOptionsState, IconButton, TextField, Typography } from "@mui/material";
-import { FC, useState } from "react"
+import { Dispatch, FC, SetStateAction, useState } from "react"
 import { IUser } from "../models/IUser";
 import UserBox from "./user-box";
 
 interface INewConversationSearchBarProps {
-  users: IUser[]
+  users: IUser[];
+  addedUsers: IUser[];
+  setAddedUsers: Dispatch<SetStateAction<IUser[]>>;
 }
 
 const NewConversationSearchBar: FC<INewConversationSearchBarProps> = (props: INewConversationSearchBarProps) => {
@@ -13,8 +15,6 @@ const NewConversationSearchBar: FC<INewConversationSearchBarProps> = (props: INe
   const defaultFilterOptions = createFilterOptions();
 
   const [email, setEmail] = useState<string>("");
-
-  const [addedUsers, setAddedUsers] = useState<IUser[]>([]);
 
   const [addedUsersSet, setAddedUsersSet] = useState<Set<string>>(new Set());
 
@@ -29,14 +29,14 @@ const NewConversationSearchBar: FC<INewConversationSearchBarProps> = (props: INe
     }
 
     addedUsersSet.add(newUser.email);
-    setAddedUsers((oldValue) => {
-      return addedUsers.concat(newUser);
+    props.setAddedUsers((oldValue) => {
+      return props.addedUsers.concat(newUser);
     });
 
   }
 
   function cancelAddedUser(user: IUser) {
-    setAddedUsers((oldValue) => oldValue.filter(item => item !== user))
+    props.setAddedUsers((oldValue) => oldValue.filter(item => item !== user))
     addedUsersSet.delete(user.email);
   }
 
@@ -48,7 +48,7 @@ const NewConversationSearchBar: FC<INewConversationSearchBarProps> = (props: INe
     <Box sx={{ backgroundColor: "green", py: 1.5 }}>
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
         <Typography sx={{ ml: 2 }}>To: </Typography>
-        {addedUsers.map((user, index) => {
+        {props.addedUsers.map((user, index) => {
           return (
             <UserBox key={index} name={user.name} handleClick={() => cancelAddedUser(user)} />
           )
@@ -62,7 +62,7 @@ const NewConversationSearchBar: FC<INewConversationSearchBarProps> = (props: INe
           renderInput={(params) => (
             <TextField {...params} variant="standard" />
           )}
-          isOptionEqualToValue={(option : any, value : any) => option.email === value}
+          isOptionEqualToValue={(option: any, value: any) => option.email === value}
           getOptionLabel={(option) => (option as IUser).name ?? email}
           fullWidth
           id="email"
