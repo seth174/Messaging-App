@@ -55,7 +55,7 @@ namespace BackEndMessagingApp.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<UserPerConversationCreateDTO>> PostUserPerConversation(UserPerConversationCreateDTO newUserPerConversation)
+        public async Task<ActionResult<UserPerConversation>> PostUserPerConversation(UserPerConversationCreateDTO newUserPerConversation)
         {
             if(_context.UserPerConversations == null)
             {
@@ -66,7 +66,7 @@ namespace BackEndMessagingApp.Controllers
             _context.UserPerConversations.Add(userPerConversation);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(UserPerConversationsController.GetUserPerConversation), new { Id = 1, Version = "1.0" }, newUserPerConversation);
+            return CreatedAtAction(nameof(UserPerConversationsController.GetUserPerConversation), new { Id = 1, Version = "1.0" }, userPerConversation);
         }
 
     }
