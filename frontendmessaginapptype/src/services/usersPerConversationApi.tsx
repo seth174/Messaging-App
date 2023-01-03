@@ -22,6 +22,7 @@ export const addUsersPerConversation = async (userId: number, conversationId: nu
       console.log("Error adding user per conversation", err);
       return {} as IUserPerConversations;
     })
+  console.log("Added user", response);
   return response;
 
 }

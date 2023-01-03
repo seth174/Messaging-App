@@ -12,6 +12,7 @@ interface IMessageHeaderProps {
 
 const MessageHeader: FC<IMessageHeaderProps> = (props: IMessageHeaderProps) => {
 
+  console.log("Users in the header", props.users)
   return (
     <Box sx={{ py: 2, backgroundColor: 'blue' }}>
       <ThemeProvider theme={theme}>
