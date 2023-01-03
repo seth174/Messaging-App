@@ -50,13 +50,13 @@ const Conversation: FC<IConversationProps> = (props: IConversationProps) => {
     return await addConversation({} as IConversation);
   }
 
-  const addUsersToConversation = (conversationId: number) => {
+  const addUsersToConversation = async (conversationId: number) => {
     newConversationAddedUsers.forEach(async (value: IUser) => {
-      if (value.id == null) return;
-      const userPerConversation = await addUsersPerConversation(value.id, conversationId);
-      console.log("Added user", userPerConversation);
+      await addUsersPerConversation(value.id!, conversationId);
     });
 
+    const currentUser: number = +window.sessionStorage.getItem("user_id")!;
+    addUsersPerConversation(currentUser, conversationId);
   }
 
   return (

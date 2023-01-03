@@ -20,30 +20,61 @@ const ComposeMessageBox: FC<IComposeMessageBoxProps> = (props: IComposeMessageBo
   const [message, setMessage] = useState<string>("");
 
   const handleDataChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const newValue: string = event.target.value;
-    if (newValue.length > 0 && newValue.substring(newValue.length - 1) === '\n') {
-      if (props.conversation == null) {
-        const newConversation = await props.createConversation();
-        props.addUsersToConversation(newConversation.id!);
-        props.setConversation(newConversation);
-      }
-      const stringUserId = window.sessionStorage.getItem("user_id")
-      const user_id: number = stringUserId != null ? +stringUserId : -1;
-      const newMessage: IMessage = { userId: user_id, createdDate: new Date(), messageText: message, conversationId: props.conversation?.id } as IMessage;
-      postMessage(newMessage);
-      props.setConversationMessage((oldValue) => {
-        if (oldValue?.messages == undefined) return;
-        return {
-          ...oldValue,
-          messages: [...oldValue?.messages, newMessage]
-        }
-      });
-      props.sendMessage(newMessage);
+    const newMessage: string = event.target.value;
+    if (newMessage.length > 0 && newMessage.substring(newMessage.length - 1) === '\n') {
       setMessage("");
-      return;
+
+      if (props.conversation == null) {
+        createNewConversation().then((newConversation: IConversation) => {
+          props.setConversation(newConversation);
+          sendNewMessage(newConversation, newMessage).then((newMessage) => {
+            updateScreenNewMessage(newMessage);
+          });
+        });
+      } else {
+        sendNewMessage(props.conversation, newMessage).then((newMessage) => {
+          updateScreenNewMessage(newMessage)
+        });
+      }
+    } else {
+      setMessage(newMessage);
     }
-    setMessage(newValue);
   }
+
+  const createNewConversation = async (): Promise<IConversation> => {
+    console.log("Creating conversation");
+    const newConversation = await props.createConversation();
+    props.addUsersToConversation(newConversation.id!);
+    console.log("Done creating conversation");
+    return newConversation;
+  }
+
+  const sendNewMessage = async (conversation: IConversation, newMessageText: string): Promise<IMessage> => {
+    const stringUserId = window.sessionStorage.getItem("user_id")
+    const user_id: number = stringUserId != null ? +stringUserId : -1;
+    const newMessage: IMessage =
+      {
+        userId: user_id,
+        createdDate: new Date(),
+        messageText: newMessageText,
+        conversationId: conversation.id
+      } as IMessage;
+    const sentMessage = await postMessage(newMessage);
+    return sentMessage;
+  }
+
+  const updateScreenNewMessage = (newMessage: IMessage) => {
+    props.setConversationMessage((oldValue) => {
+      if (oldValue?.messages == undefined) return;
+      return {
+        ...oldValue,
+        messages: [...oldValue?.messages, newMessage]
+      }
+    });
+    props.sendMessage(newMessage);
+  }
+
+  console.log("CONVERSATION", props.conversation);
 
   return (
     <Box sx={{ display: 'flex', alignItems: 'center', mx: 5, border: 1, borderRadius: 2, p: 1, my: 1.5 }}>
