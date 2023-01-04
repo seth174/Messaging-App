@@ -9,12 +9,12 @@ import CreateIcon from '@mui/icons-material/Create';
 const drawerWidth = 250;
 
 interface ISideMenuProps {
-  userPerConversations: IUserPerConversations[] | undefined
-  setConversation: React.Dispatch<React.SetStateAction<IConversation | undefined>>
+  userPerConversations: IUserPerConversations[] | undefined;
+  setConversation: React.Dispatch<React.SetStateAction<IConversation | undefined>>;
+  calculateConversationName(conversations: IUserPerConversations[] | undefined, length: number): string;
+  joinConversation(conversation: IConversation): void;
+  conversation: IConversation | undefined;
 
-  calculateConversationName(conversations: IUserPerConversations[] | undefined, length: number): string
-
-  joinConversation(conversation: IConversation): void
 }
 
 const SideMenu: FC<ISideMenuProps> = (props: ISideMenuProps) => {
@@ -45,7 +45,7 @@ const SideMenu: FC<ISideMenuProps> = (props: ISideMenuProps) => {
       <Toolbar sx={{ height: 100 }} />
       <Box>
         <List>
-          <ListItem disablePadding>
+          <ListItem disablePadding sx={{ backgroundColor: props.conversation == undefined ? "secondary.light" : "white" }}>
             <ListItemButton onClick={() => props.setConversation(undefined)}>
               <ListItemIcon>
                 <CreateIcon color="primary" />
@@ -54,7 +54,11 @@ const SideMenu: FC<ISideMenuProps> = (props: ISideMenuProps) => {
             </ListItemButton>
           </ListItem >
           {props.userPerConversations?.map((userPerConversation, index) => (
-            <ListItem key={index} disablePadding>
+            <ListItem
+              key={index}
+              disablePadding
+              sx={{ backgroundColor: userPerConversation?.conversation?.id == props.conversation?.id ? "secondary.light" : "white" }}
+            >
               <ListItemButton onClick={() => selectConversation(userPerConversation)} >
                 <ListItemIcon>
                   {userPerConversation?.conversation?.userPerConversations?.length == 2 ?
