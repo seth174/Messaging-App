@@ -113,6 +113,7 @@ const Main: FC = () => {
           setConversation={setConversation}
           calculateConversationName={calculateConversationName}
           joinConversation={JoinConversation}
+          conversation={conversation}
         />
         <Conversation
           conversation={conversation}
